@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>78DCDCF2-8305-4E22-B9ED-F877E2742252</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ACF-CLS</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>07D6B6DC08D6341B9E41D3C7AE8F288A9D67D1AC</key>
+		<string>https://github.com/acistek/ACF-CLS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ACF-CLS.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>07D6B6DC08D6341B9E41D3C7AE8F288A9D67D1AC</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/acistek/ACF-CLS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>07D6B6DC08D6341B9E41D3C7AE8F288A9D67D1AC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>07D6B6DC08D6341B9E41D3C7AE8F288A9D67D1AC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ACF-CLS</string>
+		</dict>
+	</array>
+</dict>
+</plist>
