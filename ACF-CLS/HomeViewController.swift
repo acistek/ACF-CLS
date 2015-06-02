@@ -29,6 +29,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var totalrecordLabel: UILabel!
     
     @IBOutlet weak var webView: UIWebView!
+    
+  
+   
+    
+    
     var isWebError = false
     
     @IBOutlet weak var tabBar: UITabBar!
@@ -64,13 +69,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.layoutMargins = UIEdgeInsetsZero
-        
+//        self.tableView.hidden = true
+//        self.webView.hidden = true
         webView.frame = UIScreen.mainScreen().bounds
         
         webView.center = self.view.center
         configureWebView()
         loadAddressURL()
-        tableView.backgroundView = webView
+//        tableView.backgroundView = webView
         
         self.txtSearchBar.delegate = self
         tableView.rowHeight = 45.0
@@ -240,10 +246,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if(usersInfo.count == 0){
-            tableView.backgroundView?.hidden = false
+            self.tableView.hidden = true
         }
         else{
-            tableView.backgroundView?.hidden = true
+            self.tableView.hidden = false
         }
         /*
         if(usersInfo.count == 0){
