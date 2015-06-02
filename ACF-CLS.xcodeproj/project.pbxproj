@@ -107,6 +107,10 @@
 		D2C95EDE1AFCEE5200C36295 /* FavoriteInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C95EDD1AFCEE5200C36295 /* FavoriteInfo.swift */; };
 		D2C95EE01AFD44FB00C36295 /* group-option-30.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C95EDF1AFD44FB00C36295 /* group-option-30.png */; };
 		D2C95EE21AFD450000C36295 /* group-option-50.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C95EE11AFD450000C36295 /* group-option-50.png */; };
+		D2CD70BE1B1E1C2D00CD7478 /* PODetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CD70BA1B1E1C2D00CD7478 /* PODetailInfo.swift */; };
+		D2CD70BF1B1E1C2D00CD7478 /* PODetailVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CD70BB1B1E1C2D00CD7478 /* PODetailVIewController.swift */; };
+		D2CD70C01B1E1C2D00CD7478 /* PoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CD70BC1B1E1C2D00CD7478 /* PoInfo.swift */; };
+		D2CD70C11B1E1C2D00CD7478 /* poListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CD70BD1B1E1C2D00CD7478 /* poListViewController.swift */; };
 		D2E3836A1A96741600EA6810 /* menu-list.png in Resources */ = {isa = PBXBuildFile; fileRef = D2E383691A96741600EA6810 /* menu-list.png */; };
 		D2E3836C1A96741A00EA6810 /* menu-listx2.png in Resources */ = {isa = PBXBuildFile; fileRef = D2E3836B1A96741A00EA6810 /* menu-listx2.png */; };
 		D2E383701A96840200EA6810 /* myprofile-30.png in Resources */ = {isa = PBXBuildFile; fileRef = D2E3836F1A96840200EA6810 /* myprofile-30.png */; };
@@ -239,6 +243,10 @@
 		D2C95EDD1AFCEE5200C36295 /* FavoriteInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteInfo.swift; sourceTree = "<group>"; };
 		D2C95EDF1AFD44FB00C36295 /* group-option-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group-option-30.png"; sourceTree = "<group>"; };
 		D2C95EE11AFD450000C36295 /* group-option-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group-option-50.png"; sourceTree = "<group>"; };
+		D2CD70BA1B1E1C2D00CD7478 /* PODetailInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PODetailInfo.swift; sourceTree = "<group>"; };
+		D2CD70BB1B1E1C2D00CD7478 /* PODetailVIewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PODetailVIewController.swift; sourceTree = "<group>"; };
+		D2CD70BC1B1E1C2D00CD7478 /* PoInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PoInfo.swift; sourceTree = "<group>"; };
+		D2CD70BD1B1E1C2D00CD7478 /* poListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = poListViewController.swift; sourceTree = "<group>"; };
 		D2E383691A96741600EA6810 /* menu-list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-list.png"; sourceTree = "<group>"; };
 		D2E3836B1A96741A00EA6810 /* menu-listx2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-listx2.png"; sourceTree = "<group>"; };
 		D2E3836F1A96840200EA6810 /* myprofile-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myprofile-30.png"; sourceTree = "<group>"; };
@@ -378,6 +386,17 @@
 			name = Global;
 			sourceTree = "<group>";
 		};
+		D2CD70B81B1E1C0200CD7478 /* notResponded */ = {
+			isa = PBXGroup;
+			children = (
+				D2CD70BA1B1E1C2D00CD7478 /* PODetailInfo.swift */,
+				D2CD70BB1B1E1C2D00CD7478 /* PODetailVIewController.swift */,
+				D2CD70BC1B1E1C2D00CD7478 /* PoInfo.swift */,
+				D2CD70BD1B1E1C2D00CD7478 /* poListViewController.swift */,
+			);
+			name = notResponded;
+			sourceTree = "<group>";
+		};
 		D2E516171A40B7D500869597 = {
 			isa = PBXGroup;
 			children = (
@@ -402,6 +421,7 @@
 		D2E516221A40B7D500869597 /* ACF-CLS */ = {
 			isa = PBXGroup;
 			children = (
+				D2CD70B81B1E1C0200CD7478 /* notResponded */,
 				D2E516251A40B7D500869597 /* AppDelegate.swift */,
 				D25B2F791A8E509A00AA969E /* Building */,
 				D25B2F7B1A8E51A400AA969E /* COOP */,
@@ -727,8 +747,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D23F5CE31A49D84E00D73E01 /* BuildingInfo.swift in Sources */,
+				D2CD70BF1B1E1C2D00CD7478 /* PODetailVIewController.swift in Sources */,
 				D2BA59DB1ABCB777007F65F4 /* MailViewController.swift in Sources */,
 				D26B88A11B176126002D06C9 /* MyNavigationController.swift in Sources */,
+				D2CD70BE1B1E1C2D00CD7478 /* PODetailInfo.swift in Sources */,
 				D2BE1C811A9CC3210046D67C /* NotificationViewController.swift in Sources */,
 				D2E5164D1A40BF3000869597 /* SharedClass.swift in Sources */,
 				C933E0F71A48EFB700501F2D /* CoopViewController.swift in Sources */,
@@ -739,9 +761,11 @@
 				D2E516601A42082D00869597 /* MyMenuTableViewController.swift in Sources */,
 				D2E516261A40B7D500869597 /* AppDelegate.swift in Sources */,
 				D2C95EDE1AFCEE5200C36295 /* FavoriteInfo.swift in Sources */,
+				D2CD70C11B1E1C2D00CD7478 /* poListViewController.swift in Sources */,
 				D26B889F1B176115002D06C9 /* ENSideMenuNavigationController.swift in Sources */,
 				D2C076EB1A53014400525909 /* CoopInfo.swift in Sources */,
 				D28B544C1B0CDB2700BB6E94 /* WriteValueBackDelegate.swift in Sources */,
+				D2CD70C01B1E1C2D00CD7478 /* PoInfo.swift in Sources */,
 				D2E5164B1A40BD7A00869597 /* LoginViewController.swift in Sources */,
 				D26B889D1B176109002D06C9 /* ENSideMenu.swift in Sources */,
 				D28B544E1B0CF54000BB6E94 /* TegKeychain.swift in Sources */,
