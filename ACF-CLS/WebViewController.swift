@@ -29,6 +29,10 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         
         webView.scrollView.delegate = self
         
@@ -40,21 +44,13 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, 
         
         // Do any additional setup after loading the view.
         self.title = navigationTitle
-        if(navigationTitle == "ACF Web"){
-            var homeButton : UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
-            self.navigationItem.leftBarButtonItem = homeButton
-        }
-        else{
-            self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        }
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        
         backTabBar.enabled = false
         forwardTabBar.enabled = false
         configureWebView()
         loadAddressURL()
     }
-    
-    
-    
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
         var selectedTag = tabBar.selectedItem?.tag
@@ -68,7 +64,6 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, 
         else if(selectedTag == 2){
             webView.goForward()
         }
-        hideSideMenuView()
     }
     
     func loadAddressURL() {
@@ -120,13 +115,5 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, 
         webView.loadHTMLString(errorHTML, baseURL: nil)
         activityIndicatorView.stopAnimating()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-    }
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        hideSideMenuView()
-    }
-    
-    func toggleSideMenu() {
-        toggleSideMenuView()
     }
 }

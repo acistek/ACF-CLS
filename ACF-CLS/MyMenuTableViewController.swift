@@ -7,14 +7,12 @@
 //
 
 import UIKit
-import MessageUI
 
-class MyMenuTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
+class MyMenuTableViewController: UITableViewController {
     
-    var myMail: MFMailComposeViewController!
     var selectedMenuItem : Int = 0
-    var menuArr = ["Menu","Search","ACF Buildings","ACF Web Site"]
-    var menuImg = ["blank","search","building","web"]
+    var menuArr = ["Menu","Search","ACF Buildings","ACF Web Site","Support","Contact Us"]
+    var menuImg = ["blank","search","building","web","blank","help"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +47,7 @@ class MyMenuTableViewController: UITableViewController, MFMailComposeViewControl
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section.
-        return 4
+        return 6
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -85,7 +83,7 @@ class MyMenuTableViewController: UITableViewController, MFMailComposeViewControl
             cell!.imageView?.image = UIImage(named: menuImg[indexPath.row])
         }
         
-       
+        
         return cell!
     }
     
@@ -109,32 +107,27 @@ class MyMenuTableViewController: UITableViewController, MFMailComposeViewControl
             destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
             break
         case 2:
+            isHeader = true
+            NSNotificationCenter.defaultCenter().postNotificationName("building", object: nil)
             destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("buildingInfo") as! UIViewController
             break
         case 3:
+            isHeader = true
+            NSNotificationCenter.defaultCenter().postNotificationName("acfWeb", object: nil)
             destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("acfWeb") as! UIViewController
             break
-        default:
+        case 5:
             isHeader = true
-            self.dismissViewControllerAnimated(true, completion: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName("contactUs", object: nil)
+            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("mail") as! UIViewController
+            break
+        default:
             destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
             break
         }
         if(!isHeader){
             sideMenuController()?.setContentViewController(destViewController)
         }
-        //tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
-    func mailComposeController(controller: MFMailComposeViewController!,didFinishWithResult result: MFMailComposeResult,error: NSError!){
-        switch(result.value){
-        case MFMailComposeResultSent.value:
-            println("Email sent")
-        default:
-            println("Whoops")
-        }
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
 }
 

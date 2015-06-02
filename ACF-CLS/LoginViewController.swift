@@ -137,19 +137,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
             var post:NSString = ""
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             let deviceType = platformString()
-            var identifier = UIDevice.currentDevice().identifierForVendor.UUIDString
-            
+            var deviceIdentifier = ""
+            if let getIdentifier = TegKeychain.get("deviceIdentifier"){
+                deviceIdentifier = getIdentifier
+            }else{
+                deviceIdentifier = UIDevice.currentDevice().identifierForVendor.UUIDString
+                TegKeychain.set("deviceIdentifier", value: deviceIdentifier)
+            }
             
             let deviceInfo: NSString = "System Name: " + UIDevice.currentDevice().systemName + "; System Version: " + UIDevice.currentDevice().systemVersion
             
             if(prefs.objectForKey("DEVICETOKEN") != nil){
-                let devicetoken = prefs.valueForKey("DEVICETOKEN") as! NSString
-                post = "domainSelect=\(domainSelect)&username=\(username)&password=\(password)&acfcode=clsmobile&devicetoken=\(devicetoken)&devicetype=\(deviceType)&deviceinfo=\(deviceInfo)&identifier=\(identifier)"
-            }
+                let deviceToken = prefs.valueForKey("DEVICETOKEN") as! NSString
+                post = "domainSelect=\(domainSelect)&username=\(username)&password=\(password)&acfcode=clsmobile&deviceToken=\(deviceToken)&deviceType=\(deviceType)&deviceInfo=\(deviceInfo)&deviceIdentifier=\(deviceIdentifier)"
+            }else{
+                let deviceToken = "0"
                 
-            else{
-                let devicetoken = "0"
-                post = "domainSelect=\(domainSelect)&username=\(username)&password=\(password)&acfcode=clsmobile&devicetoken=\(devicetoken)&devicetype=\(deviceType)&deviceinfo=\(deviceInfo)&identifier=\(identifier)"
+                post = "domainSelect=\(domainSelect)&username=\(username)&password=\(password)&acfcode=clsmobile&deviceToken=\(deviceToken)&deviceType=\(deviceType)&deviceInfo=\(deviceInfo)&deviceIdentifier=\(deviceIdentifier)"
             }
             
             var url:NSURL = NSURL(string: SharedClass().clsLink + "/json/login_act.cfm")!
@@ -202,39 +206,43 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
                     
                     if(success == 1)
                     {
-                        let coopID:NSString = jsonData.valueForKey("coopID") as! NSString
-                        let empName:NSString = jsonData.valueForKey("userName") as! NSString
-                        let contactListID:NSString = jsonData.valueForKey("contactListID") as! NSString
+                        let coopID:String = jsonData.valueForKey("coopID") as! String
+                        let empName:String = jsonData.valueForKey("userName") as! String
+                        let contactListID:String = jsonData.valueForKey("contactListID") as! String
+                        let loginUUID: String = jsonData.valueForKey("loginUUID") as! String
                         //NSLog("Login SUCCESS");
                         
-                        //let loggedInDate = NSDate(); this is has time element
+                        //let loggedInDate = NSDate(); this one has time element
                         let loggedInDate = NSCalendar.currentCalendar().startOfDayForDate(NSDate()) //this is without time
                         
                         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        prefs.setObject(coopID, forKey: "COOPID")
-                        prefs.setObject(loggedInDate, forKey: "LOGGINEDDATE")
-                        prefs.setObject(empName, forKey: "EMPNAME")
+                        prefs.setObject(coopID, forKey: "coopID")
+                        prefs.setObject(loggedInDate, forKey: "logginedDate")
+                        prefs.setObject(empName, forKey: "employeeName")
                         //the below vars to check credential
                         prefs.setObject(loggedInDate, forKey: "credentialDate")
                         prefs.setObject(contactListID, forKey: "contactListID")
-                        prefs.setObject(username, forKey: "username")
-                        prefs.setObject(password, forKey: "password")
                         prefs.setObject(domainSelect, forKey: "domainSelect")
+                        
+                        TegKeychain.set("username", value: username as! String)
+                        TegKeychain.set("password", value: password as! String)
+                        TegKeychain.set("loginUUID", value: loginUUID)
+                        
                         //use the synchronize() command for NSUserDefaults to make sure your stuff is saved, but in iOS 8 and on, you should not call synchronize() in most situations.
                         //prefs.synchronize()
                         
                         self.dismissViewControllerAnimated(true, completion: nil)
                     } else {
-                        var error_msg:NSString
+                        var error_msg: String
                         
                         if jsonData["error_message"] as? NSString != nil {
-                            error_msg = jsonData["error_message"] as! NSString
+                            error_msg = jsonData["error_message"] as! String
                         } else {
                             error_msg = "Unknown Error"
                         }
                         var alertView:UIAlertView = UIAlertView()
                         alertView.title = "Sign in Failed"
-                        alertView.message = error_msg as String
+                        alertView.message = error_msg
                         alertView.delegate = self
                         alertView.addButtonWithTitle("OK")
                         alertView.show()
