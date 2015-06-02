@@ -19,6 +19,10 @@ class NotificationViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         self.title = "Notifications"
         tableView.separatorInset = UIEdgeInsetsZero
@@ -35,7 +39,8 @@ class NotificationViewController: UIViewController, UITableViewDataSource, UITab
             self.tableView.addSubview(self.activityIndicatorView)
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             activityIndicatorView.startAnimating()
-            let url = NSURL(string: SharedClass().clsLink + "/json/dms_dsp.cfm?acfcode=clsmobile")
+            let authorizedJson = SharedClass().authorizedJson()
+            let url = NSURL(string: SharedClass().clsLink + "/json/dms_dsp.cfm?deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)")
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
                 

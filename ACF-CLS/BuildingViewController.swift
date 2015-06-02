@@ -83,12 +83,17 @@ class BuildingViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
+        
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.layoutMargins = UIEdgeInsetsZero
         // Do any additional setup after loading the view.
         self.title = "Building Information"
-        var homeButton : UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
-        self.navigationItem.leftBarButtonItem = homeButton
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         var reloadButton : UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "reload"), style: UIBarButtonItemStyle.Plain, target: self, action: "reloadMiles")
         self.navigationItem.rightBarButtonItem = reloadButton
         tableView.rowHeight = 90.0
@@ -113,8 +118,8 @@ class BuildingViewController: UIViewController, UITableViewDataSource, UITableVi
         //NSLog("inside view will appear")
         if Reachability.isConnectedToNetwork() {
             
-            
-            let url = NSURL(string: SharedClass().clsLink + "/json/building_dsp.cfm?acfcode=clsmobile")
+            let authorizedJson = SharedClass().authorizedJson()
+            let url = NSURL(string: SharedClass().clsLink + "/json/building_dsp.cfm?deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)")
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
                 
@@ -303,7 +308,6 @@ class BuildingViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func reloadMiles(){
-        hideSideMenuView()
         buildingInfo.removeAll(keepCapacity: false)
         for (index, field) in enumerate(self.holderBuildingInfo){
             if(field.distance <= self.miles){
@@ -313,11 +317,6 @@ class BuildingViewController: UIViewController, UITableViewDataSource, UITableVi
         reload()
     }
 
-    func toggleSideMenu(){
-        toggleSideMenuView()
-    }
-    
-    // MARK: UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return buildingInfo.count
     }
@@ -401,8 +400,4 @@ class BuildingViewController: UIViewController, UITableViewDataSource, UITableVi
         self.presentViewController(optionMenu, animated: true, completion: nil)
         //tableView.deselectRowAtIndexPath(indexPath, animated:false)
     }
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        hideSideMenuView()
-    }
-
 }

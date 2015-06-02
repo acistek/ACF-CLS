@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchBarDelegate, UITabBarDelegate, UIWebViewDelegate, APIControllerProtocol {
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchBarDelegate, UITabBarDelegate, UIWebViewDelegate, APIControllerProtocol{
     
     var api: APIController?
     
@@ -28,8 +28,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var totalrecordLabel: UILabel!
     
-    @IBOutlet weak var menuButtonItem: UIBarButtonItem!
-    
     @IBOutlet weak var webView: UIWebView!
     var isWebError = false
     
@@ -46,10 +44,17 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.init(coder: aDecoder)
         //call function update badge if did recieved push notification when home screen is open
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBadge", name: "updateBadge", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "building", name: "building", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "acfWeb", name: "acfWeb", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "contactUs", name: "contactUs", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "module", name: "module", object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        txtSearchBar.placeholder = "Enter a name to search...                            "
+        self.navigationController?.popoverPresentationController?.backgroundColor = UIColor.redColor()
         // Do any additional setup after loading the view.
         for item in tabBar.items as! [UITabBarItem] {
             if let image = item.image {
@@ -73,6 +78,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        //check if there is web error before then refresh it
         if(isWebError){
             configureWebView()
             loadAddressURL()
@@ -95,16 +101,16 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)
             
             prefs.setObject(devicetoken, forKey: "DEVICETOKEN")
-            
+            isWebError = false // this line to refresh chart when go back from login
             self.performSegueWithIdentifier("goto_login", sender: self)
         }
         else{
             let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            if let username = prefs.valueForKey("EMPNAME") as? String{
+            if let username = prefs.valueForKey("employeeName") as? String{
                 self.usernameLabel.text = username
             }
             if(self.txtSearchBar.text == ""){self.totalrecordLabel.text = ""}
-            let isCoopable: Int = prefs.integerForKey("COOPID") as Int
+            let isCoopable: Int = prefs.integerForKey("coopID") as Int
             if (isCoopable > 0) {
                 self.navigationItem.rightBarButtonItem?.title = "COOP"
             }
@@ -115,13 +121,31 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func updateBadge(){
+        //check if notification turn on or not
         var notificationCount = UIApplication.sharedApplication()
         var badgeNumber = String(notificationCount.applicationIconBadgeNumber)
         if(notificationCount.applicationIconBadgeNumber > 0){
-            notification.badgeValue = badgeNumber
+            if((notification) != nil){
+                notification.badgeValue = badgeNumber
+            }
         }
     }
-
+    
+    func building(){
+        hideSideMenuView()
+        self.performSegueWithIdentifier("building", sender: self)
+    }
+    
+    func acfWeb(){
+        hideSideMenuView()
+        self.performSegueWithIdentifier("acfWeb", sender: self)
+    }
+    
+    func contactUs(){
+        hideSideMenuView()
+        self.performSegueWithIdentifier("contactUs", sender: self)
+    }
+    
     @IBAction func signoutTapped(sender: UIBarButtonItem) {
         navigationItem.rightBarButtonItem?.title = ""
         totalrecordLabel.text = ""
@@ -268,8 +292,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func shouldPerformSegueWithIdentifier(identifier: String!, sender: AnyObject!) -> Bool {
         if identifier == "coopView" {
+            hideSideMenuView()
             let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            let isCoopable: Int = prefs.integerForKey("COOPID") as Int
+            let isCoopable: Int = prefs.integerForKey("coopID") as Int
             if (isCoopable == 0) {
                 return false
             }
@@ -292,7 +317,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             detailViewController.userContactListID = contactListID
             detailViewController.t_profile = 1
         }
-        hideSideMenuView()
         txtSearchBar.resignFirstResponder()
     }
     
@@ -349,7 +373,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
-        
+        hideSideMenuView()
         var selectedTag = tabBar.selectedItem?.tag
         if(selectedTag == 0){
             self.performSegueWithIdentifier("myProfile", sender: self)
@@ -358,16 +382,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.performSegueWithIdentifier("favorites", sender: self)
         }
         if(selectedTag == 2){
-            let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
-            //println(settings)
-            if settings.types.rawValue & UIUserNotificationType.Badge.rawValue != 0 {
-                var notificationCount = UIApplication.sharedApplication()
-                notificationCount.applicationIconBadgeNumber = 0
-                notification.badgeValue = nil
-            }
-            else{
-                NSLog("not allow notification")
-            }
+            notification.badgeValue = nil
+            var notificationCount = UIApplication.sharedApplication()
+            notificationCount.applicationIconBadgeNumber = 0
             self.performSegueWithIdentifier("notification", sender: self)
         }
         if(selectedTag == 3){
@@ -396,5 +413,4 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             presentViewController(alertView, animated: true, completion: nil)
         }
     }
-    
 }

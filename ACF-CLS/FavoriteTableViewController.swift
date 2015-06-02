@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class FavoriteTableViewController: UITableViewController, UITextFieldDelegate {
+class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, WriteValueBackDelegate {
     
     // Create an empty array of LogItem's
     var logUsers = [FavoriteInfo]()
@@ -32,24 +32,42 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate {
     
     var textMessage = "There are no users in your Favorites list."
     
+    var isAddedGroup = false
+    
+    let authorizedJson = SharedClass().authorizedJson()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.layoutMargins = UIEdgeInsetsZero
-        
+
         activityIndicatorView.activityIndicatorViewStyle = .WhiteLarge
         activityIndicatorView.color = UIColor.grayColor()
         activityIndicatorView.center = view.center
+        fetchLog("", groupName: "", isDeleteGroup: 0, isDeleteUser: 0, indexPath: NSIndexPath())
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        fetchLog("", groupName: "", isDeleteGroup: 0, isDeleteUser: 0, indexPath: NSIndexPath())
+        if(isAddedGroup){
+            fetchLog("", groupName: "", isDeleteGroup: 0, isDeleteUser: 0, indexPath: NSIndexPath())
+            isAddedGroup = false
+        }
+        
         //println("array1: \(arrayForBool)")
         //println("array2: \(sectionTitleArray)")
         //println("array3: \(sectionContentDict)")
+    }
+    
+    func writeValueBack(value: String) {
+        // this is value from Detail View Controller
+        isAddedGroup = true
     }
     
     func setGroup(isDeleteUser: Int, indexPath: NSIndexPath){
@@ -163,7 +181,7 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate {
             if let groupName = groupName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
                 var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 let contactListID: NSString = prefs.valueForKey("contactListID") as! NSString
-                var queryString = "acfcode=clsmobile&contactlistid=\(contactListID)&userContactListID=\(userContactListID)&groupName=\(groupName)&deleteGroup=\(isDeleteGroup)"
+                var queryString = "contactlistid=\(contactListID)&userContactListID=\(userContactListID)&groupName=\(groupName)&deleteGroup=\(isDeleteGroup)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)"
                 let url = NSURL(string: SharedClass().clsLink + "/json/favorite_dsp.cfm?\(queryString)")
                 let session = NSURLSession.sharedSession()
                 let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
@@ -390,7 +408,7 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate {
     
     func updateGroupName(contactListID: String, oldGroupName: String, newGroupName: String) {
         var post: NSString = ""
-        post = "contactListID=\(contactListID)&acfcode=clsmobile&oldGroupName=\(oldGroupName)&newGroupName=\(newGroupName)"
+        post = "contactListID=\(contactListID)&oldGroupName=\(oldGroupName)&newGroupName=\(newGroupName)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)"
         var url:NSURL = NSURL(string: SharedClass().clsLink + "/json/favorite_group_act.cfm")!
         var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
         var postLength:NSString = String( postData.length )
@@ -514,7 +532,7 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate {
         }
         else{
             var detailViewController: DetailViewController = segue.destinationViewController as! DetailViewController
-            
+            detailViewController.delegate = self
             var position: CGPoint = sender!.convertPoint(CGPointZero, toView: self.tableView)
             if let indexPath = self.tableView.indexPathForRowAtPoint(position)
             {

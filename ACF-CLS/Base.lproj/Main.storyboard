@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="SOo-B3-zAm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="SOo-B3-zAm">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -99,7 +99,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBD-J0-wph" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6342" y="440"/>
+            <point key="canvasLocation" x="-5880" y="-758"/>
         </scene>
         <!--Search-->
         <scene sceneID="ufC-wZ-h7g">
@@ -134,7 +134,12 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="rKI-gT-tmr"/>
                                 </constraints>
+                                <offsetWrapper key="searchTextPositionAdjustment" horizontal="0.0" vertical="0.0"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
                                 <connections>
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="hP3-lP-hKK"/>
                                 </connections>
@@ -233,7 +238,6 @@
                     <connections>
                         <outlet property="activityIndicatorView" destination="Z9n-lp-rfT" id="n3l-Lj-Wwf"/>
                         <outlet property="favoriteList" destination="0tI-KP-rGf" id="vpG-sV-BWF"/>
-                        <outlet property="menuButtonItem" destination="DUz-fc-7jS" id="Rca-fw-fHU"/>
                         <outlet property="myProfile" destination="iDw-ek-c4p" id="vmU-Cf-kze"/>
                         <outlet property="notification" destination="IHP-qH-Djg" id="OK1-zQ-Hjg"/>
                         <outlet property="signOut" destination="6gg-ub-blm" id="CKu-ru-YJP"/>
@@ -248,7 +252,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
                 <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="tAe-Fe-UMj">
-                    <rect key="frame" x="0.0" y="0.0" width="321" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="576" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <items>
                         <barButtonItem title="Notification" id="1sp-jl-hiJ">
@@ -261,22 +265,35 @@
                                 <segue destination="Shf-8r-ckn" kind="show" identifier="myProfile" id="WoZ-6J-vCc"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="hgz-uk-GTb"/>
                         <barButtonItem title="Favorites" id="D6z-3g-Mzl">
                             <connections>
                                 <segue destination="46W-3V-w69" kind="show" identifier="favorites" id="2kA-5V-HQl"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="om5-Bf-Pe4"/>
                         <barButtonItem title="Sign Out " id="2DG-lr-6BB">
                             <connections>
                                 <action selector="signoutTapped:" destination="vXZ-lx-hvc" id="Msv-yG-ne7"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem title="Building" id="tO1-gK-Xxa">
+                            <connections>
+                                <segue destination="D9l-Dk-1xo" kind="show" identifier="building" id="XAd-SP-egu"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="ACF Web" id="N8L-zi-GXq">
+                            <connections>
+                                <segue destination="od4-EO-5BC" kind="show" identifier="acfWeb" id="VPi-dT-m0K"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Contact Us" id="mhN-Bz-nPR">
+                            <connections>
+                                <segue destination="Sbb-di-cAE" kind="show" identifier="contactUs" id="aso-es-u6R"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                 </toolbar>
             </objects>
-            <point key="canvasLocation" x="-5524" y="782"/>
+            <point key="canvasLocation" x="-6591" y="-44"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="1nL-Y2-fHn">
@@ -304,29 +321,8 @@
                                             <outlet property="delegate" destination="L1I-dj-W7t" id="8eO-xc-1Bx"/>
                                         </connections>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QHH-p7-MER">
-                                        <rect key="frame" x="203" y="157" width="201" height="34"/>
-                                        <color key="backgroundColor" red="0.29411764705882354" green="0.47058823529411764" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="201" id="jzR-WZ-mDZ"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                        <state key="normal" title="Sign In">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="10"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="signinTapped:" destination="L1I-dj-W7t" eventType="touchUpInside" id="8hS-0j-MNO"/>
-                                        </connections>
-                                    </button>
                                     <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bK3-g3-YDj">
-                                        <rect key="frame" x="0.0" y="205" width="609" height="300"/>
+                                        <rect key="frame" x="0.0" y="206" width="609" height="298"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
                                         <connections>
@@ -367,6 +363,27 @@
                                             <action selector="userType:" destination="L1I-dj-W7t" eventType="valueChanged" id="31r-P0-CS5"/>
                                         </connections>
                                     </segmentedControl>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QHH-p7-MER">
+                                        <rect key="frame" x="215" y="156" width="176" height="34"/>
+                                        <color key="backgroundColor" red="0.29411764705882354" green="0.47058823529411764" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="176" id="wSw-d3-sQ3"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                        <state key="normal" title="Sign In">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="signinTapped:" destination="L1I-dj-W7t" eventType="touchUpInside" id="8hS-0j-MNO"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -375,16 +392,16 @@
                                     <constraint firstAttribute="bottom" secondItem="bK3-g3-YDj" secondAttribute="bottom" id="6K0-t7-WRO"/>
                                     <constraint firstItem="8zW-ef-d0J" firstAttribute="top" secondItem="TPJ-MA-SV7" secondAttribute="bottom" constant="15" id="AWZ-wu-QQb"/>
                                     <constraint firstAttribute="centerX" secondItem="bK3-g3-YDj" secondAttribute="centerX" constant="-0.5" id="B70-Ja-APy"/>
-                                    <constraint firstAttribute="centerX" secondItem="QHH-p7-MER" secondAttribute="centerX" id="BaS-Cg-NJH"/>
                                     <constraint firstAttribute="centerX" secondItem="TPJ-MA-SV7" secondAttribute="centerX" id="Dsv-p7-54p"/>
+                                    <constraint firstAttribute="centerX" secondItem="QHH-p7-MER" secondAttribute="centerX" constant="1" id="IfK-Ax-Nts"/>
                                     <constraint firstAttribute="centerX" secondItem="qTG-fE-GRS" secondAttribute="centerX" constant="7.5" id="XfB-lu-rFs"/>
                                     <constraint firstItem="bK3-g3-YDj" firstAttribute="centerY" secondItem="B0K-RD-Ecw" secondAttribute="centerY" constant="0.5" id="XwB-EK-VZD"/>
-                                    <constraint firstItem="QHH-p7-MER" firstAttribute="top" secondItem="8zW-ef-d0J" secondAttribute="bottom" constant="15" id="a1b-lC-LP4"/>
                                     <constraint firstAttribute="centerY" secondItem="qTG-fE-GRS" secondAttribute="centerY" constant="55.5" id="bTb-3p-OCc"/>
                                     <constraint firstAttribute="centerY" secondItem="bK3-g3-YDj" secondAttribute="centerY" constant="-94" id="caM-Ht-wN4"/>
+                                    <constraint firstItem="QHH-p7-MER" firstAttribute="top" secondItem="8zW-ef-d0J" secondAttribute="bottom" constant="14" id="ebA-iw-B9G"/>
                                     <constraint firstAttribute="centerX" secondItem="8zW-ef-d0J" secondAttribute="centerX" id="hSm-wG-ltK"/>
                                     <constraint firstItem="bK3-g3-YDj" firstAttribute="leading" secondItem="Fq7-QX-ipV" secondAttribute="leading" id="nW8-4P-hee"/>
-                                    <constraint firstItem="bK3-g3-YDj" firstAttribute="top" secondItem="QHH-p7-MER" secondAttribute="bottom" constant="14" id="too-xe-AWH"/>
+                                    <constraint firstItem="bK3-g3-YDj" firstAttribute="top" secondItem="QHH-p7-MER" secondAttribute="bottom" constant="16" id="z9G-xH-ehb"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="delegate" destination="L1I-dj-W7t" id="qtK-g3-s4l"/>
@@ -423,7 +440,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PlI-zD-to4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5779" y="-360"/>
+            <point key="canvasLocation" x="-6223" y="-1480"/>
         </scene>
         <!--Favorites-->
         <scene sceneID="88d-di-byY">
@@ -487,12 +504,12 @@
                     </connections>
                 </button>
             </objects>
-            <point key="canvasLocation" x="-6009" y="1465"/>
+            <point key="canvasLocation" x="-4617" y="781"/>
         </scene>
         <!--Mail View Controller-->
         <scene sceneID="6FZ-ec-gMV">
             <objects>
-                <viewController id="Sbb-di-cAE" customClass="MailViewController" customModule="ACF_CLS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mail" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Sbb-di-cAE" customClass="MailViewController" customModule="ACF_CLS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1Lb-Iy-hFQ"/>
                         <viewControllerLayoutGuide type="bottom" id="nvT-IX-THa"/>
@@ -515,7 +532,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7en-mB-XbU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5633" y="2219"/>
+            <point key="canvasLocation" x="-5284" y="695"/>
         </scene>
         <!--COOP-->
         <scene sceneID="ctz-Qj-K1K">
@@ -588,7 +605,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ErX-EZ-iXT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4176" y="9"/>
+            <point key="canvasLocation" x="-5156" y="-758"/>
         </scene>
         <!--Building View Controller-->
         <scene sceneID="cWR-0B-1Ta">
@@ -686,7 +703,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aLU-Hx-3GV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5111" y="-859"/>
+            <point key="canvasLocation" x="-5904" y="685"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="5Ss-tO-Nle">
@@ -748,11 +765,8 @@
                                 <rect key="frame" x="290" y="290" width="37" height="37"/>
                                 <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter or select a group" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DVd-eT-tsn">
-                                <rect key="frame" x="162" y="200" width="263" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="263" id="8dS-5T-azV"/>
-                                </constraints>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter or select a group" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DVd-eT-tsn">
+                                <rect key="frame" x="162" y="178" width="263" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -766,12 +780,10 @@
                             <constraint firstItem="iZy-8F-Wuc" firstAttribute="leading" secondItem="nby-Tx-kgY" secondAttribute="leadingMargin" constant="-20" id="74E-g8-6d9"/>
                             <constraint firstItem="oNn-yo-xKR" firstAttribute="top" secondItem="iZy-8F-Wuc" secondAttribute="bottom" id="8v0-ce-UtE"/>
                             <constraint firstAttribute="centerY" secondItem="0e9-iW-jQy" secondAttribute="centerY" constant="-8.5" id="F43-3h-OIt"/>
-                            <constraint firstItem="NoT-ea-cgt" firstAttribute="centerX" secondItem="DVd-eT-tsn" secondAttribute="centerX" constant="6.5" id="Ku8-jX-ZA1"/>
                             <constraint firstItem="NoT-ea-cgt" firstAttribute="top" secondItem="1XD-wl-orh" secondAttribute="bottom" constant="-65" id="LnG-SE-EaS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="NoT-ea-cgt" secondAttribute="trailing" constant="-20" id="Wda-tJ-bYn"/>
                             <constraint firstAttribute="trailingMargin" secondItem="iZy-8F-Wuc" secondAttribute="trailing" constant="-20" id="auJ-Wz-FPS"/>
                             <constraint firstItem="NoT-ea-cgt" firstAttribute="leading" secondItem="nby-Tx-kgY" secondAttribute="leadingMargin" constant="-20" id="cYS-Uz-1BJ"/>
-                            <constraint firstItem="NoT-ea-cgt" firstAttribute="centerY" secondItem="DVd-eT-tsn" secondAttribute="centerY" constant="60" id="fQZ-wB-k8I"/>
                             <constraint firstAttribute="centerX" secondItem="0e9-iW-jQy" secondAttribute="centerX" constant="-8.5" id="mCT-uY-49X"/>
                         </constraints>
                     </view>
@@ -800,7 +812,7 @@
                     </connections>
                 </button>
             </objects>
-            <point key="canvasLocation" x="-5146" y="1481"/>
+            <point key="canvasLocation" x="-4592" y="-44"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="b35-3v-7Gm">
@@ -869,7 +881,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2he-P5-Kpe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5153" y="130"/>
+            <point key="canvasLocation" x="-6605" y="-758"/>
         </scene>
         <!--My Navigation Controller-->
         <scene sceneID="sTb-37-fnT">
@@ -882,12 +894,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="JtO-vl-kLB"/>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="xiN-cR-c7P"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hrn-ia-lle" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6431.25" y="-359.15492957746477"/>
+            <point key="canvasLocation" x="-7342" y="-56"/>
         </scene>
     </scenes>
     <resources>
@@ -907,7 +919,8 @@
         <image name="star" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QqP-R1-htM"/>
         <segue reference="Y94-TG-lMN"/>
+        <segue reference="VPi-dT-m0K"/>
+        <segue reference="aso-es-u6R"/>
     </inferredMetricsTieBreakers>
 </document>
