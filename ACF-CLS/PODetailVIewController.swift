@@ -23,47 +23,51 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
         // Do any additional setup after loading the view.
         self.detailView.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        
-        detailView.delegate = self
-        detailView.dataSource = self
-        
-        self.detailView.addSubview(self.activityIndicatorView)
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        activityIndicatorView.startAnimating()
-        var url = NSURL(string: SharedClass().clsLink + "/json/PODetail.cfm?office=" + POShort)
-//        println(url)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
-            if(error != nil) {
-                // If there is an error in the web request, print it to the console
-                println(error.localizedDescription)
-            }
-            var err: NSError?
-            let res = response as! NSHTTPURLResponse!
-            if(res != nil){
-                if (res.statusCode >= 200 && res.statusCode < 300){
-                    self.jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
-                    if(err != nil) {
-                        // If there is an error parsing JSON, print it to the console
-                        println("JSON Error \(err!.localizedDescription)")
-                    }
-                    var resultsArr: NSArray = self.jsonResult["results"] as! NSArray
-                    self.PODetailList = PODetailInfo.poDetailInfoWithJSON(resultsArr)
-//                    println(resultsArr)
-                    self.detailView!.reloadData()
-                    self.activityIndicatorView.stopAnimating()
-                    self.activityIndicatorView.hidden = true
+        if !Reachability.isConnectedToNetwork(){
+            SharedClass().connectionAlert(self)
+        }else{
+            detailView.delegate = self
+            detailView.dataSource = self
+            
+            self.detailView.addSubview(self.activityIndicatorView)
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            activityIndicatorView.startAnimating()
+            var url = NSURL(string: SharedClass().clsLink + "/json/PODetail.cfm?office=" + POShort)
+            //        println(url)
+            let session = NSURLSession.sharedSession()
+            let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
+                if(error != nil) {
+                    // If there is an error in the web request, print it to the console
+                    println(error.localizedDescription)
                 }
-                else{
+                var err: NSError?
+                let res = response as! NSHTTPURLResponse!
+                if(res != nil){
+                    if (res.statusCode >= 200 && res.statusCode < 300){
+                        self.jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+                        if(err != nil) {
+                            // If there is an error parsing JSON, print it to the console
+                            println("JSON Error \(err!.localizedDescription)")
+                        }
+                        var resultsArr: NSArray = self.jsonResult["results"] as! NSArray
+                        self.PODetailList = PODetailInfo.poDetailInfoWithJSON(resultsArr)
+                        //                    println(resultsArr)
+                        self.detailView!.reloadData()
+                        self.activityIndicatorView.stopAnimating()
+                        self.activityIndicatorView.hidden = true
+                    }
+                    else{
+                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                        SharedClass().serverAlert(self)
+                    }
+                }else{
                     UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    self.activityIndicatorView.stopAnimating()
                     SharedClass().serverAlert(self)
                 }
-            }else{
-                
-            }
-        })
-        task.resume()
-
+            })
+            task.resume()
+        }
         
     }
 
