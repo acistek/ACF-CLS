@@ -343,9 +343,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func loadAddressURL() {
         if let requestURL = NSURL(string: SharedClass().clsLink + "/?switchID=staffGraph_dsp") {
-            self.tableView.addSubview(self.activityIndicatorView)
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-            activityIndicatorView.startAnimating()
             let request = NSURLRequest(URL: requestURL)
             if Reachability.isConnectedToNetwork() {
                 webView.loadRequest(request)
@@ -353,6 +350,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\"><br /><br /><br />You are currently offline</div></body></html>"
                 webView.loadHTMLString(errorHTML, baseURL: nil)
             }
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            activityIndicatorView.stopAnimating()
         }
     }
     
@@ -367,7 +366,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
-
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
         hideSideMenuView()
