@@ -30,8 +30,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet weak var webView: UIWebView!
     
+    
     @IBOutlet weak var poListButton: UIButton!
   
+    @IBOutlet weak var offlineLabel: UILabel!
    
     
     
@@ -67,7 +69,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 item.image = image.imageWithColor(SharedClass().tabBarImageColor).imageWithRenderingMode(.AlwaysOriginal)
             }
         }
-        
+//        webView.hidden = true
+
+        if Reachability.isConnectedToNetwork(){
+            webView.hidden = false
+            poListButton.hidden = false
+            offlineLabel.hidden = true
+        }
+        else{
+            webView.hidden = true
+            poListButton.hidden = true
+            offlineLabel.hidden = false
+        }
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.layoutMargins = UIEdgeInsetsZero
 //        self.tableView.hidden = true
@@ -247,14 +260,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if(usersInfo.count == 0){
-            self.tableView.hidden = true
-            self.webView.hidden = false
-            self.poListButton.hidden = false
+            tableView.hidden = true
+            webView.hidden = false
+            poListButton.hidden = false
         }
         else{
-            self.tableView.hidden = false
-            self.webView.hidden = true
-            self.poListButton.hidden = true
+            tableView.hidden = false
+            webView.hidden = true
+            poListButton.hidden = true
         }
         /*
         if(usersInfo.count == 0){
@@ -371,16 +384,27 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        // Report the error inside the web view.
-        let localizedErrorMessage = NSLocalizedString("An error occured:", comment: "")
+//         Report the error inside the web view.
+//        let localizedErrorMessage = NSLocalizedString("An error occured:", comment: "")
+    
+//        let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\">\(localizedErrorMessage) \(error.localizedDescription)</div></body></html>"
         
-        //let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\">\(localizedErrorMessage) \(error.localizedDescription)</div></body></html>"
-        
-        let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\"><br /><br /><br />You are currently offline</div></body></html>"
+//        let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\"><br /><br /><br />You are currently offline</div></body></html>"
+//        isWebError = true
+//        webView.loadHTMLString(errorHTML, baseURL: nil)
+//        activityIndicatorView.stopAnimating()
+//        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         isWebError = true
-        webView.loadHTMLString(errorHTML, baseURL: nil)
-        activityIndicatorView.stopAnimating()
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        if Reachability.isConnectedToNetwork(){
+            webView.hidden = false
+            poListButton.hidden = false
+            offlineLabel.hidden = true
+        }
+        else{
+            webView.hidden = true
+            poListButton.hidden = true
+            offlineLabel.hidden = false
+        }
     }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {

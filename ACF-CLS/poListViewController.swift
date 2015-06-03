@@ -7,62 +7,69 @@
 //
 
 import UIKit
-import CoreData
-import MessageUI
+
 
 class poListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     var jsonResult: NSDictionary = [String:String]()
     var PoList = [PoInfo]()
     let cellIdentifier = "PoCell"
        
-    @IBOutlet weak var PoTable: UITableView!
+    @IBOutlet var PoTable: UITableView!
     
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
 //        let backButton = UIBarButtonItem(title: "<", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
 //        navigationItem.leftBarButtonItem = backButton
-        self.PoTable.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
-        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-
-        PoTable.delegate = self
-        PoTable.dataSource = self
-
-        self.PoTable.addSubview(self.activityIndicatorView)
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        activityIndicatorView.startAnimating()
-        
-        let url = NSURL(string: SharedClass().clsLink + "/json/POList.cfm")
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
-            if(error != nil) {
-                // If there is an error in the web request, print it to the console
-                println(error.localizedDescription)
-            }
-            var err: NSError?
-            let res = response as! NSHTTPURLResponse!
-            if(res != nil){
-                if (res.statusCode >= 200 && res.statusCode < 300){
-                    self.jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
-                    if(err != nil) {
-                        // If there is an error parsing JSON, print it to the console
-                        println("JSON Error \(err!.localizedDescription)")
-                    }
-                    var resultsArr: NSArray = self.jsonResult["results"] as! NSArray
-                    self.PoList = PoInfo.poInfoWithJSON(resultsArr)
-                    self.PoTable!.reloadData()
-                    self.activityIndicatorView.stopAnimating()
-                    self.activityIndicatorView.hidden = true
+        if !Reachability.isConnectedToNetwork(){
+            SharedClass().connectionAlert(self)
+        }else{
+            self.PoTable.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
+            self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+            
+            PoTable.delegate = self
+            PoTable.dataSource = self
+            
+            self.PoTable.addSubview(self.activityIndicatorView)
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            activityIndicatorView.startAnimating()
+            
+            let url = NSURL(string: SharedClass().clsLink + "/json/POList.cfm")
+            let session = NSURLSession.sharedSession()
+            let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
+                if(error != nil) {
+                    // If there is an error in the web request, print it to the console
+                    println(error.localizedDescription)
                 }
-                else{
+                var err: NSError?
+                let res = response as! NSHTTPURLResponse!
+                if(res != nil){
+                    if (res.statusCode >= 200 && res.statusCode < 300){
+                        self.jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+                        if(err != nil) {
+                            // If there is an error parsing JSON, print it to the console
+                            println("JSON Error \(err!.localizedDescription)")
+                        }
+                        var resultsArr: NSArray = self.jsonResult["results"] as! NSArray
+//                        println(resultsArr)
+                        self.PoList = PoInfo.poInfoWithJSON(resultsArr)
+                        self.PoTable!.reloadData()
+                        self.activityIndicatorView.stopAnimating()
+                        self.activityIndicatorView.hidden = true
+                    }
+                    else{
+                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                        SharedClass().serverAlert(self)
+                    }
+                }else{
                     UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    self.activityIndicatorView.stopAnimating()
                     SharedClass().serverAlert(self)
                 }
-            }else{
-                
-            }
-        })
-        task.resume()
+            })
+            task.resume()
+        }
+        
         
         // Do any additional setup after loading the view.
     }

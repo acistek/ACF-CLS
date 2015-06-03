@@ -137,6 +137,12 @@
                                 <rect key="frame" x="0.0" y="128" width="600" height="280"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are currently offline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Hn-Mg-bjs">
+                                <rect key="frame" x="211" y="290" width="180" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dyc-5X-EyZ">
                                 <rect key="frame" x="218" y="430" width="166" height="30"/>
                                 <color key="backgroundColor" red="0.29411764709999999" green="0.47058823529999999" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -221,6 +227,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="QbW-NS-SB8" secondAttribute="trailing" constant="-8" id="0Cm-N8-cDG"/>
                             <constraint firstItem="rro-Fi-hdG" firstAttribute="leading" secondItem="B3q-RI-ZsR" secondAttribute="trailing" constant="1" id="0gT-kJ-7dx"/>
                             <constraint firstItem="rro-Fi-hdG" firstAttribute="top" secondItem="dO0-bM-XVc" secondAttribute="bottom" constant="4" id="3OW-80-ZYW"/>
+                            <constraint firstAttribute="centerY" secondItem="5Hn-Mg-bjs" secondAttribute="centerY" id="3m7-ax-hQK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mpg-Ul-x6X" secondAttribute="trailing" constant="-20" id="8cQ-mb-C8T"/>
                             <constraint firstAttribute="centerX" secondItem="UMt-uX-f20" secondAttribute="centerX" id="Axq-sz-ZuX"/>
                             <constraint firstItem="QbW-NS-SB8" firstAttribute="top" secondItem="dO0-bM-XVc" secondAttribute="bottom" constant="3" id="C7Y-Y1-kGg"/>
@@ -234,6 +241,7 @@
                             <constraint firstItem="dO0-bM-XVc" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-20" id="V1n-hS-X1D"/>
                             <constraint firstItem="BQz-IW-2mD" firstAttribute="top" secondItem="UMt-uX-f20" secondAttribute="bottom" constant="192" id="V93-aL-SQe"/>
                             <constraint firstItem="BQz-IW-2mD" firstAttribute="top" secondItem="JnJ-Ew-k1t" secondAttribute="bottom" id="VqX-nN-9cV"/>
+                            <constraint firstAttribute="centerX" secondItem="5Hn-Mg-bjs" secondAttribute="centerX" constant="-1" id="Wie-1d-TqN"/>
                             <constraint firstItem="rro-Fi-hdG" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="69" id="ZJB-o1-Dnf"/>
                             <constraint firstItem="rro-Fi-hdG" firstAttribute="firstBaseline" secondItem="B3q-RI-ZsR" secondAttribute="firstBaseline" id="ZRz-FK-E7W"/>
                             <constraint firstItem="JnJ-Ew-k1t" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-20" id="bo9-ho-Jbl"/>
@@ -271,6 +279,7 @@
                         <outlet property="favoriteList" destination="0tI-KP-rGf" id="vpG-sV-BWF"/>
                         <outlet property="myProfile" destination="iDw-ek-c4p" id="vmU-Cf-kze"/>
                         <outlet property="notification" destination="IHP-qH-Djg" id="OK1-zQ-Hjg"/>
+                        <outlet property="offlineLabel" destination="5Hn-Mg-bjs" id="mV8-99-u6C"/>
                         <outlet property="poListButton" destination="dyc-5X-EyZ" id="Vvk-Hv-DYh"/>
                         <outlet property="signOut" destination="6gg-ub-blm" id="CKu-ru-YJP"/>
                         <outlet property="tabBar" destination="JnJ-Ew-k1t" id="NUa-FP-Vbw"/>
@@ -278,7 +287,7 @@
                         <outlet property="totalrecordLabel" destination="QbW-NS-SB8" id="gnL-FS-I8Y"/>
                         <outlet property="txtSearchBar" destination="dO0-bM-XVc" id="Jwa-Jr-nOk"/>
                         <outlet property="usernameLabel" destination="rro-Fi-hdG" id="109-el-bwb"/>
-                        <outlet property="webView" destination="UMt-uX-f20" id="liS-Ab-rrD"/>
+                        <outlet property="webView" destination="UMt-uX-f20" id="0cp-ts-tzl"/>
                         <segue destination="L1I-dj-W7t" kind="presentation" identifier="goto_login" id="WS9-j3-bah"/>
                     </connections>
                 </viewController>
@@ -945,10 +954,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="GNb-LQ-RSI">
-                                <rect key="frame" x="282" y="282" width="37" height="37"/>
-                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="b29-OL-ZvS">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -978,6 +983,10 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="GNb-LQ-RSI">
+                                <rect key="frame" x="282" y="282" width="37" height="37"/>
+                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -989,7 +998,7 @@
                             <constraint firstItem="b29-OL-ZvS" firstAttribute="leading" secondItem="eO3-mJ-jUh" secondAttribute="leading" id="n5J-7I-mdD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Staff Not Respnded" id="Fbg-z8-pZB"/>
+                    <navigationItem key="navigationItem" title="Staff Not Responded" id="Fbg-z8-pZB"/>
                     <connections>
                         <outlet property="PoTable" destination="b29-OL-ZvS" id="RAy-HN-G48"/>
                         <outlet property="activityIndicatorView" destination="GNb-LQ-RSI" id="b6v-gV-Dq1"/>
@@ -1011,10 +1020,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="AUJ-ec-gVM">
-                                <rect key="frame" x="282" y="282" width="37" height="37"/>
-                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="eb6-iA-N3h">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1044,6 +1049,10 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="AUJ-ec-gVM">
+                                <rect key="frame" x="282" y="282" width="37" height="37"/>
+                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1055,7 +1064,7 @@
                             <constraint firstItem="eb6-iA-N3h" firstAttribute="leading" secondItem="1OV-aV-qOa" secondAttribute="leading" id="nL6-am-zVI"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Staff Not Resonded" id="Fps-VS-i4S"/>
+                    <navigationItem key="navigationItem" title="Staff Not Responded" id="Fps-VS-i4S"/>
                     <connections>
                         <outlet property="activityIndicatorView" destination="AUJ-ec-gVM" id="ozS-TE-CNf"/>
                         <outlet property="detailView" destination="eb6-iA-N3h" id="kbk-R4-dRm"/>
@@ -1083,8 +1092,8 @@
         <image name="star" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Y94-TG-lMN"/>
         <segue reference="VPi-dT-m0K"/>
+        <segue reference="N1j-fd-as6"/>
         <segue reference="aso-es-u6R"/>
     </inferredMetricsTieBreakers>
 </document>
