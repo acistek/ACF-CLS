@@ -243,10 +243,16 @@
                             <constraint firstAttribute="trailingMargin" secondItem="dO0-bM-XVc" secondAttribute="trailing" constant="-20" id="lOJ-aK-pFg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="JnJ-Ew-k1t" secondAttribute="trailing" constant="-20" id="prn-l1-ilY"/>
                             <constraint firstItem="mpg-Ul-x6X" firstAttribute="top" secondItem="rro-Fi-hdG" secondAttribute="bottom" id="rZ2-ec-F2P"/>
+                            <constraint firstItem="dyc-5X-EyZ" firstAttribute="top" secondItem="UMt-uX-f20" secondAttribute="bottom" constant="22" id="rfi-d5-SnU"/>
                             <constraint firstAttribute="centerX" secondItem="dyc-5X-EyZ" secondAttribute="centerX" constant="-1" id="rum-f0-1G6"/>
                             <constraint firstItem="dO0-bM-XVc" firstAttribute="top" secondItem="pB3-P6-GoI" secondAttribute="bottom" id="zIp-9V-nQ4"/>
                             <constraint firstItem="JnJ-Ew-k1t" firstAttribute="top" secondItem="mpg-Ul-x6X" secondAttribute="bottom" id="zam-XN-uPc"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="J9g-7T-7Je"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Search" id="eBF-kz-32O">
                         <barButtonItem key="leftBarButtonItem" image="menu" id="DUz-fc-7jS">
@@ -955,13 +961,13 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mBR-nr-2cJ">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zBu-LP-17R">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1021,13 +1027,13 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g1x-Cc-8kp">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Kas-PT-3lC">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>

@@ -111,7 +111,7 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
             let selectedColor = UIView()
             selectedColor.backgroundColor = SharedClass().selectedCellColor
             cell.selectedBackgroundView = selectedColor
-            cell.textLabel?.font = UIFont.boldSystemFontOfSize(12.0)
+            cell.textLabel?.font = UIFont.boldSystemFontOfSize(11.0)
             cell.textLabel?.textColor = UIColor.blackColor()
             if(poList.POShort != "OTHER" && poList.POShort != "invalid" && poList.POShort != "all"){
                 cell.textLabel?.text = poList.POName + " - " + poList.POShort
