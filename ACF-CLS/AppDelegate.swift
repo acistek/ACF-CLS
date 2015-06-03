@@ -181,7 +181,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let rootViewController:UIViewController = storyboard.instantiateViewControllerWithIdentifier(storyboardID) as! UIViewController
             navigationController.viewControllers = [rootViewController]
             window!.rootViewController = navigationController
-
         }
         if(application.applicationIconBadgeNumber > 0){
             NSNotificationCenter.defaultCenter().postNotificationName("updateBadge", object: nil)

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import WebKit
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchBarDelegate, UITabBarDelegate, UIWebViewDelegate, APIControllerProtocol{
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchBarDelegate, UITabBarDelegate, WKScriptMessageHandler, WKNavigationDelegate, APIControllerProtocol{
     
     var api: APIController?
     
@@ -28,14 +29,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var totalrecordLabel: UILabel!
     
-    @IBOutlet weak var webView: UIWebView!
-    
-    
-    @IBOutlet weak var poListButton: UIButton!
-  
-    @IBOutlet weak var offlineLabel: UILabel!
-   
-    
+    var webView: WKWebView
     
     var isWebError = false
     
@@ -45,10 +39,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var notification: UITabBarItem!
     @IBOutlet weak var signOut: UITabBarItem!
     
-    
     var totalCount: Int = 0
     
     required init(coder aDecoder: NSCoder) {
+        self.webView = WKWebView(frame: CGRectZero)
         super.init(coder: aDecoder)
         //call function update badge if did recieved push notification when home screen is open
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBadge", name: "updateBadge", object: nil)
@@ -56,6 +50,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "acfWeb", name: "acfWeb", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "contactUs", name: "contactUs", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "module", name: "module", object: nil)
+        
+        self.webView.navigationDelegate = self
     }
     
     override func viewDidLoad() {
@@ -69,29 +65,35 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 item.image = image.imageWithColor(SharedClass().tabBarImageColor).imageWithRenderingMode(.AlwaysOriginal)
             }
         }
-//        webView.hidden = true
 
-        if Reachability.isConnectedToNetwork(){
-            webView.hidden = false
-            poListButton.hidden = false
-            offlineLabel.hidden = true
-        }
-        else{
-            webView.hidden = true
-            poListButton.hidden = true
-            offlineLabel.hidden = false
-        }
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.layoutMargins = UIEdgeInsetsZero
-//        self.tableView.hidden = true
-//        self.webView.hidden = true
-        webView.frame = UIScreen.mainScreen().bounds
+        
+        var userScript = WKUserScript(
+            source: "",
+            injectionTime: WKUserScriptInjectionTime.AtDocumentEnd,
+            forMainFrameOnly: true
+        )
+        var contentController = WKUserContentController()
+        contentController.addUserScript(userScript)
+        contentController.addScriptMessageHandler(
+            self,
+            name: "callbackHandler"
+        )
+        
+        var config = WKWebViewConfiguration()
+        config.userContentController = contentController
+        
+        self.webView = WKWebView(
+            frame: UIScreen.mainScreen().bounds,
+            configuration: config
+        )
         
         webView.center = self.view.center
         configureWebView()
         loadAddressURL()
-//        tableView.backgroundView = webView
-        
+        tableView.backgroundView = webView
+
         self.txtSearchBar.delegate = self
         tableView.rowHeight = 45.0
     }
@@ -258,26 +260,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if(usersInfo.count == 0){
-            tableView.hidden = true
-            webView.hidden = false
-            poListButton.hidden = false
+            tableView.backgroundView?.hidden = false
         }
         else{
-            tableView.hidden = false
-            webView.hidden = true
-            poListButton.hidden = true
+            tableView.backgroundView?.hidden = true
         }
-        /*
-        if(usersInfo.count == 0){
-            let checkImage = UIImage(named: "welcome.png")
-            let checkmark = UIImageView(image: checkImage)
-            tableView.backgroundView = checkmark
-        }
-        else{
-            tableView.backgroundView = nil
-        }*/
         return usersInfo.count
     }
     
@@ -344,7 +332,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         txtSearchBar.resignFirstResponder()
     }
     
-    
     @IBAction func toggleSideMenu(sender: AnyObject) {
         txtSearchBar.resignFirstResponder()
         toggleSideMenuView()
@@ -353,59 +340,34 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         view.endEditing(true)
     }
-
+    
     func loadAddressURL() {
         if let requestURL = NSURL(string: SharedClass().clsLink + "/?switchID=staffGraph_dsp") {
+            self.tableView.addSubview(self.activityIndicatorView)
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            activityIndicatorView.startAnimating()
             let request = NSURLRequest(URL: requestURL)
-            webView.loadRequest(request)
+            if Reachability.isConnectedToNetwork() {
+                webView.loadRequest(request)
+            }else{
+                let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\"><br /><br /><br />You are currently offline</div></body></html>"
+                webView.loadHTMLString(errorHTML, baseURL: nil)
+            }
         }
     }
     
     func configureWebView() {
         webView.backgroundColor = UIColor.whiteColor()
-        webView.scalesPageToFit = true
-        webView.dataDetectorTypes = .All
     }
     
-    func webViewDidStartLoad(webView: UIWebView) {
-        tableView.addSubview(self.activityIndicatorView)
-        activityIndicatorView.startAnimating()
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-    }
-    
-    func webViewDidFinishLoad(webView: UIWebView) {
-        activityIndicatorView.stopAnimating()
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage){
+        if(message.name == "callbackHandler") {
+            if(message.body.containsString("notResponded")){
+                performSegueWithIdentifier("PoList", sender: self)
+            }
+        }
     }
 
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        currentUrl = request.URL!
-        return true
-    }
-    
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-//         Report the error inside the web view.
-//        let localizedErrorMessage = NSLocalizedString("An error occured:", comment: "")
-    
-//        let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\">\(localizedErrorMessage) \(error.localizedDescription)</div></body></html>"
-        
-//        let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\"><br /><br /><br />You are currently offline</div></body></html>"
-//        isWebError = true
-//        webView.loadHTMLString(errorHTML, baseURL: nil)
-//        activityIndicatorView.stopAnimating()
-//        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-        isWebError = true
-        if Reachability.isConnectedToNetwork(){
-            webView.hidden = false
-            poListButton.hidden = false
-            offlineLabel.hidden = true
-        }
-        else{
-            webView.hidden = true
-            poListButton.hidden = true
-            offlineLabel.hidden = false
-        }
-    }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
         hideSideMenuView()

@@ -33,8 +33,8 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
             self.PoTable.addSubview(self.activityIndicatorView)
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             activityIndicatorView.startAnimating()
-            
-            let url = NSURL(string: SharedClass().clsLink + "/json/POList.cfm")
+            let authorizedJson = SharedClass().authorizedJson()
+            let url = NSURL(string: SharedClass().clsLink + "/json/POList.cfm?deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)")
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
                 if(error != nil) {
@@ -51,11 +51,12 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
                             println("JSON Error \(err!.localizedDescription)")
                         }
                         var resultsArr: NSArray = self.jsonResult["results"] as! NSArray
-//                        println(resultsArr)
-                        self.PoList = PoInfo.poInfoWithJSON(resultsArr)
-                        self.PoTable!.reloadData()
-                        self.activityIndicatorView.stopAnimating()
-                        self.activityIndicatorView.hidden = true
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.PoList = PoInfo.poInfoWithJSON(resultsArr)
+                            self.PoTable!.reloadData()
+                            self.activityIndicatorView.stopAnimating()
+                            self.activityIndicatorView.hidden = true
+                        })
                     }
                     else{
                         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
