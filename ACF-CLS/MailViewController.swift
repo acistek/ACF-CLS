@@ -93,6 +93,13 @@ class MailViewController: UIViewController, WKScriptMessageHandler, WKNavigation
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if !Reachability.isConnectedToNetwork() {
+            SharedClass().connectionAlert(self)
+        }
+    }
+    
     func sendEmail(){
         webView.evaluateJavaScript("sendMail(1)", completionHandler: nil)
     }

@@ -133,28 +133,6 @@
                                 <rect key="frame" x="276" y="261" width="37" height="37"/>
                                 <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UMt-uX-f20">
-                                <rect key="frame" x="0.0" y="128" width="600" height="280"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are currently offline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Hn-Mg-bjs">
-                                <rect key="frame" x="211" y="290" width="180" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dyc-5X-EyZ">
-                                <rect key="frame" x="218" y="430" width="166" height="30"/>
-                                <color key="backgroundColor" red="0.29411764709999999" green="0.47058823529999999" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <state key="normal" title=" View Staff Not Responded ">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="3XP-Ig-PJb" kind="show" identifier="PoList" id="eE1-Uz-Ym7"/>
-                                </connections>
-                            </button>
                             <searchBar contentMode="redraw" placeholder="Enter a name to search..." translatesAutoresizingMaskIntoConstraints="NO" id="dO0-bM-XVc">
                                 <rect key="frame" x="-4" y="64" width="608" height="44"/>
                                 <constraints>
@@ -227,21 +205,12 @@
                             <constraint firstAttribute="trailingMargin" secondItem="QbW-NS-SB8" secondAttribute="trailing" constant="-8" id="0Cm-N8-cDG"/>
                             <constraint firstItem="rro-Fi-hdG" firstAttribute="leading" secondItem="B3q-RI-ZsR" secondAttribute="trailing" constant="1" id="0gT-kJ-7dx"/>
                             <constraint firstItem="rro-Fi-hdG" firstAttribute="top" secondItem="dO0-bM-XVc" secondAttribute="bottom" constant="4" id="3OW-80-ZYW"/>
-                            <constraint firstAttribute="centerY" secondItem="5Hn-Mg-bjs" secondAttribute="centerY" id="3m7-ax-hQK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mpg-Ul-x6X" secondAttribute="trailing" constant="-20" id="8cQ-mb-C8T"/>
-                            <constraint firstAttribute="centerX" secondItem="UMt-uX-f20" secondAttribute="centerX" id="Axq-sz-ZuX"/>
                             <constraint firstItem="QbW-NS-SB8" firstAttribute="top" secondItem="dO0-bM-XVc" secondAttribute="bottom" constant="3" id="C7Y-Y1-kGg"/>
-                            <constraint firstItem="UMt-uX-f20" firstAttribute="top" secondItem="rro-Fi-hdG" secondAttribute="bottom" id="Cv7-bH-6hY"/>
                             <constraint firstAttribute="centerX" secondItem="Z9n-lp-rfT" secondAttribute="centerX" constant="5.5" id="G8L-La-BZm"/>
-                            <constraint firstItem="UMt-uX-f20" firstAttribute="top" secondItem="rro-Fi-hdG" secondAttribute="bottom" id="I4t-sL-lOk"/>
-                            <constraint firstItem="dyc-5X-EyZ" firstAttribute="top" secondItem="UMt-uX-f20" secondAttribute="bottom" constant="22" id="J9g-7T-7Je"/>
-                            <constraint firstItem="UMt-uX-f20" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="JRS-q2-RhE"/>
                             <constraint firstItem="mpg-Ul-x6X" firstAttribute="top" secondItem="pB3-P6-GoI" secondAttribute="bottom" constant="64" id="SGx-U6-7C6"/>
-                            <constraint firstItem="JnJ-Ew-k1t" firstAttribute="bottom" secondItem="dyc-5X-EyZ" secondAttribute="bottom" priority="750" constant="140" id="TXW-yD-54i"/>
                             <constraint firstItem="dO0-bM-XVc" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-20" id="V1n-hS-X1D"/>
-                            <constraint firstItem="BQz-IW-2mD" firstAttribute="top" secondItem="UMt-uX-f20" secondAttribute="bottom" constant="192" id="V93-aL-SQe"/>
                             <constraint firstItem="BQz-IW-2mD" firstAttribute="top" secondItem="JnJ-Ew-k1t" secondAttribute="bottom" id="VqX-nN-9cV"/>
-                            <constraint firstAttribute="centerX" secondItem="5Hn-Mg-bjs" secondAttribute="centerX" constant="-1" id="Wie-1d-TqN"/>
                             <constraint firstItem="rro-Fi-hdG" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="69" id="ZJB-o1-Dnf"/>
                             <constraint firstItem="rro-Fi-hdG" firstAttribute="firstBaseline" secondItem="B3q-RI-ZsR" secondAttribute="firstBaseline" id="ZRz-FK-E7W"/>
                             <constraint firstItem="JnJ-Ew-k1t" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-20" id="bo9-ho-Jbl"/>
@@ -251,16 +220,9 @@
                             <constraint firstAttribute="trailingMargin" secondItem="dO0-bM-XVc" secondAttribute="trailing" constant="-20" id="lOJ-aK-pFg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="JnJ-Ew-k1t" secondAttribute="trailing" constant="-20" id="prn-l1-ilY"/>
                             <constraint firstItem="mpg-Ul-x6X" firstAttribute="top" secondItem="rro-Fi-hdG" secondAttribute="bottom" id="rZ2-ec-F2P"/>
-                            <constraint firstItem="dyc-5X-EyZ" firstAttribute="top" secondItem="UMt-uX-f20" secondAttribute="bottom" constant="22" id="rfi-d5-SnU"/>
-                            <constraint firstAttribute="centerX" secondItem="dyc-5X-EyZ" secondAttribute="centerX" constant="-1" id="rum-f0-1G6"/>
                             <constraint firstItem="dO0-bM-XVc" firstAttribute="top" secondItem="pB3-P6-GoI" secondAttribute="bottom" id="zIp-9V-nQ4"/>
                             <constraint firstItem="JnJ-Ew-k1t" firstAttribute="top" secondItem="mpg-Ul-x6X" secondAttribute="bottom" id="zam-XN-uPc"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="J9g-7T-7Je"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Search" id="eBF-kz-32O">
                         <barButtonItem key="leftBarButtonItem" image="menu" id="DUz-fc-7jS">
@@ -279,15 +241,12 @@
                         <outlet property="favoriteList" destination="0tI-KP-rGf" id="vpG-sV-BWF"/>
                         <outlet property="myProfile" destination="iDw-ek-c4p" id="vmU-Cf-kze"/>
                         <outlet property="notification" destination="IHP-qH-Djg" id="OK1-zQ-Hjg"/>
-                        <outlet property="offlineLabel" destination="5Hn-Mg-bjs" id="mV8-99-u6C"/>
-                        <outlet property="poListButton" destination="dyc-5X-EyZ" id="Vvk-Hv-DYh"/>
                         <outlet property="signOut" destination="6gg-ub-blm" id="CKu-ru-YJP"/>
                         <outlet property="tabBar" destination="JnJ-Ew-k1t" id="NUa-FP-Vbw"/>
                         <outlet property="tableView" destination="mpg-Ul-x6X" id="0gU-7I-FWT"/>
                         <outlet property="totalrecordLabel" destination="QbW-NS-SB8" id="gnL-FS-I8Y"/>
                         <outlet property="txtSearchBar" destination="dO0-bM-XVc" id="Jwa-Jr-nOk"/>
                         <outlet property="usernameLabel" destination="rro-Fi-hdG" id="109-el-bwb"/>
-                        <outlet property="webView" destination="UMt-uX-f20" id="0cp-ts-tzl"/>
                         <segue destination="L1I-dj-W7t" kind="presentation" identifier="goto_login" id="WS9-j3-bah"/>
                     </connections>
                 </viewController>
@@ -333,6 +292,19 @@
                         </barButtonItem>
                     </items>
                 </toolbar>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dyc-5X-EyZ">
+                    <rect key="frame" x="0.0" y="0.0" width="166" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.29411764709999999" green="0.47058823529999999" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <state key="normal" title=" View Staff Not Responded ">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <segue destination="3XP-Ig-PJb" kind="show" identifier="PoList" id="eE1-Uz-Ym7"/>
+                    </connections>
+                </button>
             </objects>
             <point key="canvasLocation" x="-6591" y="-44"/>
         </scene>
@@ -1092,8 +1064,8 @@
         <image name="star" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Y94-TG-lMN"/>
         <segue reference="VPi-dT-m0K"/>
-        <segue reference="N1j-fd-as6"/>
         <segue reference="aso-es-u6R"/>
     </inferredMetricsTieBreakers>
 </document>

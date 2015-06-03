@@ -108,11 +108,12 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, 
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
         // Report the error inside the web view.
-        let localizedErrorMessage = NSLocalizedString("An error occured:", comment: "")
+        //let localizedErrorMessage = NSLocalizedString("An error occured:", comment: "")
         
-        let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\">\(localizedErrorMessage) \(error.localizedDescription)</div></body></html>"
+        //let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\">\(localizedErrorMessage) \(error.localizedDescription)</div></body></html>"
         
-        webView.loadHTMLString(errorHTML, baseURL: nil)
+        //webView.loadHTMLString(errorHTML, baseURL: nil)
+        SharedClass().connectionAlert(self)
         activityIndicatorView.stopAnimating()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
     }

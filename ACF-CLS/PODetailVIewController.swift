@@ -32,7 +32,8 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             self.detailView.addSubview(self.activityIndicatorView)
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             activityIndicatorView.startAnimating()
-            var url = NSURL(string: SharedClass().clsLink + "/json/PODetail.cfm?office=" + POShort)
+            let authorizedJson = SharedClass().authorizedJson()
+            var url = NSURL(string: SharedClass().clsLink + "/json/PODetail.cfm?office=\(POShort)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)")
             //        println(url)
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
@@ -50,11 +51,12 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
                             println("JSON Error \(err!.localizedDescription)")
                         }
                         var resultsArr: NSArray = self.jsonResult["results"] as! NSArray
-                        self.PODetailList = PODetailInfo.poDetailInfoWithJSON(resultsArr)
-                        //                    println(resultsArr)
-                        self.detailView!.reloadData()
-                        self.activityIndicatorView.stopAnimating()
-                        self.activityIndicatorView.hidden = true
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.PODetailList = PODetailInfo.poDetailInfoWithJSON(resultsArr)
+                            self.detailView!.reloadData()
+                            self.activityIndicatorView.stopAnimating()
+                            self.activityIndicatorView.hidden = true
+                        })
                     }
                     else{
                         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
