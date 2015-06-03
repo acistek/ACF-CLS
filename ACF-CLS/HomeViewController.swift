@@ -30,6 +30,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet weak var webView: UIWebView!
     
+    @IBOutlet weak var poListButton: UIButton!
   
    
     
@@ -247,9 +248,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         if(usersInfo.count == 0){
             self.tableView.hidden = true
+            self.webView.hidden = false
+            self.poListButton.hidden = false
         }
         else{
             self.tableView.hidden = false
+            self.webView.hidden = true
+            self.poListButton.hidden = true
         }
         /*
         if(usersInfo.count == 0){
