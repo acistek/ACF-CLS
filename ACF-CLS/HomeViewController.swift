@@ -57,7 +57,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        txtSearchBar.placeholder = "Enter a name to search...                            "
         self.navigationController?.popoverPresentationController?.backgroundColor = UIColor.redColor()
         // Do any additional setup after loading the view.
         for item in tabBar.items as! [UITabBarItem] {
