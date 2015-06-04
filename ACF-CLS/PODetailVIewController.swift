@@ -20,21 +20,15 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-//        self.detailView.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         if !Reachability.isConnectedToNetwork(){
             SharedClass().connectionAlert(self)
         }else{
-            detailView.delegate = self
-            detailView.dataSource = self
-            
             self.detailView.addSubview(self.activityIndicatorView)
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             activityIndicatorView.startAnimating()
             let authorizedJson = SharedClass().authorizedJson()
             var url = NSURL(string: SharedClass().clsLink + "/json/PODetail.cfm?office=\(POShort)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)")
-            //        println(url)
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
                 if(error != nil) {
@@ -60,6 +54,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
                     }
                     else{
                         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                        self.activityIndicatorView.stopAnimating()
                         SharedClass().serverAlert(self)
                     }
                 }else{
@@ -70,7 +65,6 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             })
             task.resume()
         }
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -87,7 +81,6 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UITableViewCell
         var t_height: CGFloat = 55.00
         let poDetailList = self.PODetailList[indexPath.row]
         if(poDetailList.LastName == "POName"){
@@ -121,12 +114,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             cell.textLabel?.textAlignment = .Left
             cell.accessoryType = .None
             var t_header = ""
-//            if(POShort != "OTHER" && POShort != "all" && POShort != "invalid"){
-                t_header = POName
-//            }
-//            else{
-//                t_header = POName
-//            }
+            t_header = POName
             cell.textLabel?.text = t_header
             cell.detailTextLabel?.text = ""
             cell.userInteractionEnabled = false;
@@ -143,7 +131,6 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             cell.textLabel?.textAlignment = NSTextAlignment.Center
             cell.accessoryType = .None
             var t_header = poDetailList.FirstName
-//            cell.textLabel?.text = t_header
             cell.detailTextLabel?.text = ""
             cell.userInteractionEnabled = false;
         }
@@ -174,10 +161,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             cell.detailTextLabel?.text = "Not Responded In Days:" + poDetailList.DaysNotResponded
             cell.userInteractionEnabled = true;
         }
-        
-        
         return cell
-    
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
