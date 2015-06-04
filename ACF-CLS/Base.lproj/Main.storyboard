@@ -929,6 +929,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="b29-OL-ZvS">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PoCell" textLabel="mBR-nr-2cJ" detailTextLabel="zBu-LP-17R" style="IBUITableViewCellStyleSubtitle" id="CgK-xp-CiL">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -995,6 +996,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="eb6-iA-N3h">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="poDetailCell" textLabel="g1x-Cc-8kp" detailTextLabel="Kas-PT-3lC" style="IBUITableViewCellStyleSubtitle" id="a5N-37-uiW">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -1064,8 +1066,8 @@
         <image name="star" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Y94-TG-lMN"/>
-        <segue reference="VPi-dT-m0K"/>
+        <segue reference="N1j-fd-as6"/>
         <segue reference="aso-es-u6R"/>
+        <segue reference="VPi-dT-m0K"/>
     </inferredMetricsTieBreakers>
 </document>

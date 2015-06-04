@@ -21,7 +21,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.detailView.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
+//        self.detailView.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
         if !Reachability.isConnectedToNetwork(){
             SharedClass().connectionAlert(self)
@@ -108,6 +108,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
         let SecondTitleColor = UIColor(red: 222/255.0, green: 229/255.0, blue: 222/255.0, alpha: 1.0)
         var cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.layoutMargins = UIEdgeInsetsZero
+        cell.preservesSuperviewLayoutMargins = false
         cell.textLabel?.textAlignment = NSTextAlignment.Center
         let poDetailList = self.PODetailList[indexPath.row]
         if(poDetailList.LastName == "POName"){
