@@ -19,16 +19,10 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let backButton = UIBarButtonItem(title: "<", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
-//        navigationItem.leftBarButtonItem = backButton
         if !Reachability.isConnectedToNetwork(){
             SharedClass().connectionAlert(self)
         }else{
-//            self.PoTable.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
             self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-            
-            PoTable.delegate = self
-            PoTable.dataSource = self
             
             self.PoTable.addSubview(self.activityIndicatorView)
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
@@ -60,6 +54,7 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
                     }
                     else{
                         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                        self.activityIndicatorView.stopAnimating()
                         SharedClass().serverAlert(self)
                     }
                 }else{
@@ -70,22 +65,11 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
             })
             task.resume()
         }
-        
-        
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-        
-        let url = NSURL(string: SharedClass().clsLink + "/json/POList.cfm")
-        let session = NSURLSession.sharedSession()
-
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -138,16 +122,9 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             }
         }
-        
-        
         return cell
     }
     
-
-  
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
@@ -159,8 +136,6 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
             poDetailVIewController.POShort = selectedPO.POShort
             poDetailVIewController.POName = selectedPO.POName
         }
-
-        
     }
 
 }
