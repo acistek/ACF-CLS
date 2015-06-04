@@ -24,7 +24,7 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
         if !Reachability.isConnectedToNetwork(){
             SharedClass().connectionAlert(self)
         }else{
-            self.PoTable.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
+//            self.PoTable.separatorStyle = UITableViewCellSeparatorStyle(rawValue: 0)!
             self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
             
             PoTable.delegate = self
@@ -99,6 +99,7 @@ class poListViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.layoutMargins = UIEdgeInsetsZero
+        cell.preservesSuperviewLayoutMargins = false
         let poList = self.PoList[indexPath.row]
         if(poList.POShort == "header"){
             cell.backgroundColor = SharedClass().coopGroupHeaderColor
