@@ -57,7 +57,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        txtSearchBar.placeholder = "Enter a name to search...                            "
         self.navigationController?.popoverPresentationController?.backgroundColor = UIColor.redColor()
         // Do any additional setup after loading the view.
         for item in tabBar.items as! [UITabBarItem] {
@@ -349,6 +348,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }else{
                 let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\"><br /><br /><br />You are currently offline</div></body></html>"
                 webView.loadHTMLString(errorHTML, baseURL: nil)
+                isWebError = true
             }
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             activityIndicatorView.stopAnimating()

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class poListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+class POListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     var jsonResult: NSDictionary = [String:String]()
     var PoList = [PoInfo]()
     let cellIdentifier = "PoCell"
