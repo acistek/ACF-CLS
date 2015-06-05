@@ -17,6 +17,7 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet var PoTable: UITableView!
     
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if !Reachability.isConnectedToNetwork(){
@@ -94,8 +95,7 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
             cell.textLabel?.font = UIFont.boldSystemFontOfSize(18.0)
             cell.textLabel?.textAlignment = .Left
             cell.accessoryType = .None
-            let t_header = "Program Office"
-            cell.textLabel?.text = t_header
+            cell.textLabel?.text = poList.subtitle
             cell.detailTextLabel?.text = ""
             cell.userInteractionEnabled = false;
         }
@@ -112,7 +112,7 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
             else{
                 cell.textLabel?.text = poList.POName
             }
-            let cellValue = "Total number of staff not responded - " + poList.totalUsers
+            let cellValue = poList.subtitle + poList.totalUsers
             cell.detailTextLabel?.text = cellValue
             if(poList.totalUsers == "0"){
                 cell.userInteractionEnabled = false;
@@ -120,6 +120,7 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
             }
             else{
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                cell.userInteractionEnabled = true;
             }
         }
         return cell

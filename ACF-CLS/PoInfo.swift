@@ -12,12 +12,13 @@ class PoInfo {
     var POName: String
     var POShort: String
     var totalUsers: String
+    var subtitle: String
     
-    
-    init(POName: String, POShort: String, totalUsers:String){
+    init(POName: String, POShort: String, totalUsers:String, subtitle:String){
         self.POName = POName
         self.POShort = POShort
         self.totalUsers = totalUsers
+        self.subtitle = subtitle
     }
     
     class func poInfoWithJSON(allResults: NSArray) -> [PoInfo] {
@@ -33,8 +34,8 @@ class PoInfo {
                 let POName = result["POName"] as? String ?? ""
                 let POShort = result["POShort"] as? String ?? ""
                 let totalUsers = result["totalUsers"] as? String ?? ""
-                
-                var poList = PoInfo(POName: POName, POShort: POShort, totalUsers: totalUsers)
+                let subtitle = result["subtitle"] as? String ?? ""
+                var poList = PoInfo(POName: POName, POShort: POShort, totalUsers: totalUsers, subtitle: subtitle)
                 poLists.append(poList)
             }
         }

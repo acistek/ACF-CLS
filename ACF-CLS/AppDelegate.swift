@@ -9,6 +9,9 @@
 import UIKit
 import CoreData
 import AudioToolbox
+import Fabric
+import Crashlytics
+
 
 extension UIImage {
     func imageWithColor(tintColor: UIColor) -> UIImage {
@@ -70,6 +73,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var tableView = UITableView.appearance()
         tableView.tableFooterView = UIView(frame: CGRectZero)
+        Fabric.with([Crashlytics()])
+
         return true
     }
     

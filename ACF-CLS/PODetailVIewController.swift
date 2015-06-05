@@ -158,7 +158,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             var t_header = poDetailList.FirstName
             cell.textLabel?.text = poDetailList.FirstName + " " + poDetailList.LastName
-            cell.detailTextLabel?.text = "Not Responded In Days:" + poDetailList.DaysNotResponded
+            cell.detailTextLabel?.text = poDetailList.subtitle + poDetailList.DaysNotResponded
             cell.userInteractionEnabled = true;
         }
         return cell

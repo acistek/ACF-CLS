@@ -14,14 +14,15 @@ class PODetailInfo {
     var Division: String
     var DaysNotResponded: String
     var CLSID: String
+    var subtitle:String
     
-    
-    init(LastName: String, FirstName: String, Division:String, DaysNotResponded: String, CLSID: String){
+    init(LastName: String, FirstName: String, Division:String, DaysNotResponded: String, CLSID: String, subtitle:String){
         self.LastName = LastName
         self.FirstName = FirstName
         self.Division = Division
         self.DaysNotResponded = DaysNotResponded
         self.CLSID = CLSID
+        self.subtitle = subtitle
     }
     
     class func poDetailInfoWithJSON(allResults: NSArray) -> [PODetailInfo] {
@@ -39,8 +40,8 @@ class PODetailInfo {
                 let Division = result["Division"] as? String ?? ""
                 let DaysNotResponded = result["DaysNotResponded"] as? String ?? ""
                 let CLSID = result["CLSID"] as? String ?? ""
-                
-                var poDetailList = PODetailInfo(LastName: LastName, FirstName: FirstName, Division: Division, DaysNotResponded:DaysNotResponded, CLSID:CLSID)
+                let subtitle = result["subtitle"] as? String ?? ""
+                var poDetailList = PODetailInfo(LastName: LastName, FirstName: FirstName, Division: Division, DaysNotResponded:DaysNotResponded, CLSID:CLSID, subtitle:subtitle)
                 poDetailLists.append(poDetailList)
             }
         }
