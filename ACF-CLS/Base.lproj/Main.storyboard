@@ -849,30 +849,18 @@
                                     <navigationItem id="pP9-Wq-ROO"/>
                                 </items>
                             </navigationBar>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D2s-bq-Zbu">
-                                <rect key="frame" x="-4" y="20" width="608" height="529"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <dataDetectorType key="dataDetectorTypes"/>
-                                <connections>
-                                    <outlet property="delegate" destination="od4-EO-5BC" id="dIR-qm-MBi"/>
-                                </connections>
-                            </webView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Jft-9q-6Cm">
-                                <rect key="frame" x="290" y="268" width="37" height="37"/>
+                                <rect key="frame" x="282" y="281" width="37" height="37"/>
                                 <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="ydc-Um-pKg" secondAttribute="trailing" constant="-20" id="8IZ-yN-IZ2"/>
-                            <constraint firstItem="D2s-bq-Zbu" firstAttribute="centerY" secondItem="Jft-9q-6Cm" secondAttribute="centerY" constant="-2" id="CR0-Lp-IPx"/>
-                            <constraint firstItem="D2s-bq-Zbu" firstAttribute="centerX" secondItem="Jft-9q-6Cm" secondAttribute="centerX" constant="-8.5" id="JIj-hh-ohG"/>
+                            <constraint firstAttribute="centerX" secondItem="Jft-9q-6Cm" secondAttribute="centerX" constant="-0.5" id="BUA-HD-s4O"/>
                             <constraint firstItem="4wu-V2-Qw6" firstAttribute="top" secondItem="ydc-Um-pKg" secondAttribute="bottom" id="KcK-Ab-bGh"/>
-                            <constraint firstItem="4wu-V2-Qw6" firstAttribute="top" secondItem="D2s-bq-Zbu" secondAttribute="bottom" constant="51" id="Vca-1B-UTJ"/>
                             <constraint firstItem="ydc-Um-pKg" firstAttribute="leading" secondItem="VkX-01-W5N" secondAttribute="leadingMargin" constant="-20" id="Wip-vv-EFH"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="D2s-bq-Zbu" secondAttribute="trailing" constant="-20" id="aH0-e3-JqX"/>
-                            <constraint firstItem="D2s-bq-Zbu" firstAttribute="leading" secondItem="VkX-01-W5N" secondAttribute="leadingMargin" constant="-20" id="gzC-RJ-lou"/>
-                            <constraint firstItem="D2s-bq-Zbu" firstAttribute="top" secondItem="3wm-tl-HyI" secondAttribute="bottom" id="nab-iI-g0A"/>
+                            <constraint firstAttribute="centerY" secondItem="Jft-9q-6Cm" secondAttribute="centerY" constant="0.5" id="lGk-Li-HI6"/>
                         </constraints>
                     </view>
                     <connections>
@@ -881,7 +869,6 @@
                         <outlet property="forwardTabBar" destination="mtc-hA-HoL" id="yYf-4I-qeS"/>
                         <outlet property="refreshTabBar" destination="DZm-id-eTR" id="H0Y-z8-BqX"/>
                         <outlet property="tabBar" destination="ydc-Um-pKg" id="chr-yk-oZA"/>
-                        <outlet property="webView" destination="D2s-bq-Zbu" id="mUu-QN-Or2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2he-P5-Kpe" userLabel="First Responder" sceneMemberID="firstResponder"/>

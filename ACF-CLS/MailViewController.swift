@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 AcisTek Corporation. All rights reserved.
 //
 
-import UIKit
 import WebKit
 
 class MailViewController: UIViewController, WKScriptMessageHandler, WKNavigationDelegate {
@@ -143,4 +142,7 @@ class MailViewController: UIViewController, WKScriptMessageHandler, WKNavigation
         super.didReceiveMemoryWarning()
     }
     
+    func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
+        SharedClass().connectionAlert(self)
+    }
 }

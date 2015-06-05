@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 AcisTek Corporation. All rights reserved.
 //
 
-import UIKit
 import WebKit
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchBarDelegate, UITabBarDelegate, WKScriptMessageHandler, WKNavigationDelegate, APIControllerProtocol{
@@ -87,7 +86,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             frame: UIScreen.mainScreen().bounds,
             configuration: config
         )
-        
+        webView.addObserver(self, forKeyPath: "estimatedProgress", options: .New, context: nil)
         webView.center = self.view.center
         configureWebView()
         loadAddressURL()
@@ -350,8 +349,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 webView.loadHTMLString(errorHTML, baseURL: nil)
                 isWebError = true
             }
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            activityIndicatorView.stopAnimating()
         }
     }
     
@@ -363,6 +360,19 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if(message.name == "callbackHandler") {
             if(message.body.containsString("notResponded")){
                 performSegueWithIdentifier("PoList", sender: self)
+            }
+        }
+    }
+    
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<()>) {
+        self.tableView.addSubview(self.activityIndicatorView)
+        if (keyPath == "estimatedProgress") {
+            if(webView.estimatedProgress < 1){
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+                activityIndicatorView.startAnimating()
+            }else{
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                activityIndicatorView.stopAnimating()
             }
         }
     }

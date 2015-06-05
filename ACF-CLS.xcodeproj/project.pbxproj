@@ -392,7 +392,7 @@
 			name = Global;
 			sourceTree = "<group>";
 		};
-		D2CD70B81B1E1C0200CD7478 /* notResponded */ = {
+		D2CD70B81B1E1C0200CD7478 /* NotResponded */ = {
 			isa = PBXGroup;
 			children = (
 				D2CD70BA1B1E1C2D00CD7478 /* PODetailInfo.swift */,
@@ -400,7 +400,7 @@
 				D2CD70BC1B1E1C2D00CD7478 /* PoInfo.swift */,
 				D2CD70BD1B1E1C2D00CD7478 /* POListViewController.swift */,
 			);
-			name = notResponded;
+			name = NotResponded;
 			sourceTree = "<group>";
 		};
 		D2E516171A40B7D500869597 = {
@@ -429,7 +429,7 @@
 			children = (
 				D2BE24031B21C6CC0003A0AC /* Fabric.framework */,
 				D2BE24041B21C6CC0003A0AC /* Crashlytics.framework */,
-				D2CD70B81B1E1C0200CD7478 /* notResponded */,
+				D2CD70B81B1E1C0200CD7478 /* NotResponded */,
 				D2E516251A40B7D500869597 /* AppDelegate.swift */,
 				D25B2F791A8E509A00AA969E /* Building */,
 				D25B2F7B1A8E51A400AA969E /* COOP */,

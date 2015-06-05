@@ -13,6 +13,7 @@ class MyMenuTableViewController: UITableViewController {
     var selectedMenuItem : Int = 0
     var menuArr = ["Menu","Search","ACF Buildings","ACF Web Site","Support","Contact Us"]
     var menuImg = ["blank","search","building","web","blank","help"]
+    var rowNo = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +54,7 @@ class MyMenuTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var cell = tableView.dequeueReusableCellWithIdentifier("CELL") as? UITableViewCell
+        rowNo += 1
         cell?.layoutMargins = UIEdgeInsetsZero
         if (cell == nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "CELL")
@@ -63,6 +65,7 @@ class MyMenuTableViewController: UITableViewController {
             cell!.selectedBackgroundView = selectedBackgroundView
         }
         if(menuArr[indexPath.row] == "Menu" || menuArr[indexPath.row] == "Support"){
+            rowNo = 1
             cell!.backgroundColor = SharedClass().headerColor
             let selectedColor = UIView()
             selectedColor.backgroundColor = SharedClass().headerColor
@@ -74,16 +77,12 @@ class MyMenuTableViewController: UITableViewController {
             cell!.textLabel?.text = menuArr[indexPath.row]
         }
         else{
-            //let selectedColor = UIView()
-            //selectedColor.backgroundColor = UIColor.lightGrayColor()
-            //cell!.selectedBackgroundView = selectedColor
+            cell!.backgroundColor = rowNo % 2 == 0 ? UIColor.clearColor() : SharedClass().cellBackGroundColor
             cell!.textLabel?.textColor = UIColor.blackColor()
             cell!.textLabel?.font = UIFont.boldSystemFontOfSize(14.0)
             cell!.textLabel?.text = menuArr[indexPath.row]
             cell!.imageView?.image = UIImage(named: menuImg[indexPath.row])
         }
-        
-        
         return cell!
     }
     
@@ -122,6 +121,7 @@ class MyMenuTableViewController: UITableViewController {
             destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("mail") as! UIViewController
             break
         default:
+            isHeader = true
             destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
             break
         }
