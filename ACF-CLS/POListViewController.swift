@@ -20,6 +20,10 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         if !Reachability.isConnectedToNetwork(){
             SharedClass().connectionAlert(self)
         }else{
@@ -49,6 +53,7 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
                         dispatch_async(dispatch_get_main_queue(), {
                             self.PoList = PoInfo.poInfoWithJSON(resultsArr)
                             self.PoTable!.reloadData()
+                            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                             self.activityIndicatorView.stopAnimating()
                             self.activityIndicatorView.hidden = true
                         })
