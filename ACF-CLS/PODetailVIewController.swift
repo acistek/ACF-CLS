@@ -53,6 +53,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
                         dispatch_async(dispatch_get_main_queue(), {
                             self.PODetailList = PODetailInfo.poDetailInfoWithJSON(resultsArr)
                             self.detailView!.reloadData()
+                            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                             self.activityIndicatorView.stopAnimating()
                             self.activityIndicatorView.hidden = true
                         })

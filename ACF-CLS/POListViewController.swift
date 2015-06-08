@@ -53,6 +53,7 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
                         dispatch_async(dispatch_get_main_queue(), {
                             self.PoList = PoInfo.poInfoWithJSON(resultsArr)
                             self.PoTable!.reloadData()
+                            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                             self.activityIndicatorView.stopAnimating()
                             self.activityIndicatorView.hidden = true
                         })
