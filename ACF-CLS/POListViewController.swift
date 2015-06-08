@@ -20,6 +20,10 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         if !Reachability.isConnectedToNetwork(){
             SharedClass().connectionAlert(self)
         }else{

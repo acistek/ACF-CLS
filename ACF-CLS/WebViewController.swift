@@ -112,8 +112,7 @@ class WebViewController: UIViewController, WKScriptMessageHandler, WKNavigationD
             if Reachability.isConnectedToNetwork() {
                 webView.loadRequest(request)
             }else{
-                let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\"><br /><br /><br />You are currently offline</div></body></html>"
-                webView.loadHTMLString(errorHTML, baseURL: nil)
+                SharedClass().connectionAlert(self)
             }
         }
     }
