@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyMenuTableViewController: UITableViewController {
+class CLSMenuTableViewController: UITableViewController {
     
     var selectedMenuItem : Int = 0
     var menuArr = ["Menu","Search","ACF Buildings","ACF Web Site","Support","Contact Us"]
@@ -91,41 +91,27 @@ class MyMenuTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        //if (indexPath.row == selectedMenuItem) {
-        //    self.dismissViewControllerAnimated(true, completion: nil)
-        //}
-        //selectedMenuItem = indexPath.row
-        
-        //Present new view controller
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
-        var destViewController : UIViewController
-        var isHeader = false
+        var isRefresh = false
         switch (indexPath.row) {
         case 1:
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
+            isRefresh = true
             break
         case 2:
-            isHeader = true
             NSNotificationCenter.defaultCenter().postNotificationName("building", object: nil)
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("buildingInfo") as! UIViewController
             break
         case 3:
-            isHeader = true
             NSNotificationCenter.defaultCenter().postNotificationName("acfWeb", object: nil)
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("acfWeb") as! UIViewController
             break
         case 5:
-            isHeader = true
             NSNotificationCenter.defaultCenter().postNotificationName("contactUs", object: nil)
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("mail") as! UIViewController
             break
         default:
-            isHeader = true
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
             break
         }
-        if(!isHeader){
+        if(isRefresh){
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
+            var destViewController : UIViewController
+            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
             sideMenuController()?.setContentViewController(destViewController)
         }
     }

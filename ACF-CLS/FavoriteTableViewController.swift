@@ -49,7 +49,8 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, W
 
         activityIndicatorView.activityIndicatorViewStyle = .WhiteLarge
         activityIndicatorView.color = UIColor.grayColor()
-        activityIndicatorView.center = view.center
+        activityIndicatorView.center = CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height / 2.0)
+        activityIndicatorView.autoresizingMask = .FlexibleLeftMargin | .FlexibleRightMargin | .FlexibleTopMargin | .FlexibleBottomMargin
         fetchLog("", groupName: "", isDeleteGroup: 0, isDeleteUser: 0, indexPath: NSIndexPath())
     }
     
@@ -59,7 +60,6 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, W
             fetchLog("", groupName: "", isDeleteGroup: 0, isDeleteUser: 0, indexPath: NSIndexPath())
             isAddedGroup = false
         }
-        
         //println("array1: \(arrayForBool)")
         //println("array2: \(sectionTitleArray)")
         //println("array3: \(sectionContentDict)")
@@ -352,7 +352,6 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, W
     
     func editGroupName(sender:UIButton!){
         t_groupName = sectionTitleArray.objectAtIndex(sender.tag) as! NSString as String
-        
         var alert = UIAlertController(title: "Edit Group Name", message: "", preferredStyle: .Alert)
         //2. Add the text field. You can configure it however you need.
         alert.addTextFieldWithConfigurationHandler({(textField) -> Void in
@@ -361,9 +360,8 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, W
         })
         
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            
+            alert.textFields![0].resignFirstResponder()
             let textField = alert.textFields![0] as! UITextField
-            
             var groupName:NSString = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
             
             if (groupName.isEqualToString("")) {
@@ -377,16 +375,10 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, W
             }
             else{
                 //get group name from popup text field and then submit to update the group name
-                self.tableView.addSubview(self.activityIndicatorView)
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-                self.activityIndicatorView.startAnimating()
-                
                 var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 let contactListID: NSString = prefs.valueForKey("contactListID") as! NSString
                 self.updateGroupName(contactListID as String, oldGroupName: self.t_groupName, newGroupName: groupName as String)
                 self.fetchLog("", groupName: "", isDeleteGroup: 0, isDeleteUser: 0, indexPath: NSIndexPath())
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                self.activityIndicatorView.stopAnimating()
             }
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
@@ -408,6 +400,9 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, W
     
     func updateGroupName(contactListID: String, oldGroupName: String, newGroupName: String) {
         var post: NSString = ""
+        self.tableView.addSubview(self.activityIndicatorView)
+        self.activityIndicatorView.startAnimating()
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         post = "contactListID=\(contactListID)&oldGroupName=\(oldGroupName)&newGroupName=\(newGroupName)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)"
         var url:NSURL = NSURL(string: SharedClass().clsLink + "/json/favorite_group_act.cfm")!
         var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
@@ -433,10 +428,16 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, W
                 if(isError == 1){
                     self.actionSheet(message)
                 }
+                self.activityIndicatorView.stopAnimating()
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }else{
+                self.activityIndicatorView.stopAnimating()
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 SharedClass().serverAlert(self)
             }
         } else {
+            self.activityIndicatorView.stopAnimating()
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             SharedClass().serverAlert(self)
         }
     }
