@@ -420,15 +420,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             }
             else{
                 //get group name from popup text field and then check favorite table if the user is existed or not to take action
-                self.tableView.addSubview(self.activityIndicatorView)
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-                self.activityIndicatorView.startAnimating()
-                
                 self.t_groupName = textField.text
                 self.saveToFavorite(self.myContactListID, favorite_ContactListID: self.userContactListID, groupName: self.t_groupName)
-                
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                self.activityIndicatorView.stopAnimating()
             }
         }))
         if(checkGroup != ""){
@@ -445,6 +438,9 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     func saveToFavorite(myContactListID: String, favorite_ContactListID: String, groupName: String) {
         var post: NSString = ""
+        self.tableView.addSubview(self.activityIndicatorView)
+        self.activityIndicatorView.startAnimating()
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         post = "contactListID=\(myContactListID)&favorite_ContactListID=\(favorite_ContactListID)&groupName=\(groupName)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)"
         var url:NSURL = NSURL(string: SharedClass().clsLink + "/json/favorite_act.cfm")!
         var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
@@ -474,13 +470,19 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                     self.groupPicker.reloadAllComponents()
                     self.groupPicker.selectRow(0, inComponent: 0, animated: true)
                     self.groupTextField.text = self.groupPickerValues[0] as! String
+                    self.activityIndicatorView.stopAnimating()
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 })
                 delegate?.writeValueBack("Added to group")
                 self.actionSheet(message)
             }else{
+                self.activityIndicatorView.stopAnimating()
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 SharedClass().serverAlert(self)
             }
         } else {
+            self.activityIndicatorView.stopAnimating()
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             SharedClass().serverAlert(self)
         }
     }

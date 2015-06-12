@@ -48,7 +48,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "building", name: "building", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "acfWeb", name: "acfWeb", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "contactUs", name: "contactUs", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "module", name: "module", object: nil)
         
         self.webView.navigationDelegate = self
     }

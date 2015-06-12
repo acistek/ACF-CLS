@@ -121,7 +121,7 @@
 		D2E5164D1A40BF3000869597 /* SharedClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5164C1A40BF3000869597 /* SharedClass.swift */; };
 		D2E5164F1A40C06C00869597 /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5164E1A40C06C00869597 /* APIController.swift */; };
 		D2E516511A40C0FB00869597 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E516501A40C0FB00869597 /* UserInfo.swift */; };
-		D2E516601A42082D00869597 /* MyMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5165F1A42082D00869597 /* MyMenuTableViewController.swift */; };
+		D2E516601A42082D00869597 /* CLSMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5165F1A42082D00869597 /* CLSMenuTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -253,7 +253,7 @@
 		D2E5164C1A40BF3000869597 /* SharedClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedClass.swift; sourceTree = "<group>"; };
 		D2E5164E1A40C06C00869597 /* APIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
 		D2E516501A40C0FB00869597 /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
-		D2E5165F1A42082D00869597 /* MyMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMenuTableViewController.swift; sourceTree = "<group>"; };
+		D2E5165F1A42082D00869597 /* CLSMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLSMenuTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -319,7 +319,7 @@
 		D25B2F7C1A8E51FF00AA969E /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				D2E5165F1A42082D00869597 /* MyMenuTableViewController.swift */,
+				D2E5165F1A42082D00869597 /* CLSMenuTableViewController.swift */,
 				D26B88A01B176126002D06C9 /* MyNavigationController.swift */,
 			);
 			name = Menu;
@@ -751,7 +751,7 @@
 				B7871FE61A7319A100B64452 /* FavoriteTableViewController.swift in Sources */,
 				D2BE1C841A9CC51D0046D67C /* NotificationInfo.swift in Sources */,
 				D2E5164F1A40C06C00869597 /* APIController.swift in Sources */,
-				D2E516601A42082D00869597 /* MyMenuTableViewController.swift in Sources */,
+				D2E516601A42082D00869597 /* CLSMenuTableViewController.swift in Sources */,
 				D2E516261A40B7D500869597 /* AppDelegate.swift in Sources */,
 				D2C95EDE1AFCEE5200C36295 /* FavoriteInfo.swift in Sources */,
 				D2CD70C11B1E1C2D00CD7478 /* POListViewController.swift in Sources */,
