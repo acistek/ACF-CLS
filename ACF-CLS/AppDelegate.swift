@@ -73,8 +73,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var tableView = UITableView.appearance()
         tableView.tableFooterView = UIView(frame: CGRectZero)
+        
         Fabric.with([Crashlytics()])
-
+        
+        if let getIdentifier = TegKeychain.get("deviceIdentifier"){
+            Crashlytics.sharedInstance().setUserIdentifier(getIdentifier)
+        }
+        if let username = TegKeychain.get("username"){
+            Crashlytics.sharedInstance().setUserName(username)
+        }
         return true
     }
     

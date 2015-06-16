@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-import Crashlytics
 
 class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegate, CLLocationManagerDelegate {
     
@@ -228,9 +227,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
                         TegKeychain.set("username", value: username as! String)
                         TegKeychain.set("password", value: password as! String)
                         TegKeychain.set("loginUUID", value: loginUUID)
-                        //set u p crashlytics with user name and device id.
-                        Crashlytics.sharedInstance().setUserName(empName)
-                        Crashlytics.sharedInstance().setUserIdentifier(deviceIdentifier)
+                        
                         //use the synchronize() command for NSUserDefaults to make sure your stuff is saved, but in iOS 8 and on, you should not call synchronize() in most situations.
                         //prefs.synchronize()
                         
