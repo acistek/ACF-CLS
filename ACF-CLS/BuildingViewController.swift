@@ -136,7 +136,7 @@ class BuildingViewController: UIViewController, UITableViewDataSource, UITableVi
                             // If there is an error parsing JSON, print it to the console
                             println("JSON Error \(err!.localizedDescription)")
                         }
-                        var resultsArr: NSArray = self.jsonResult["results"] as! NSArray
+                        var resultsArr: NSArray = self.jsonResult["resultssss"] as! NSArray
                         self.buildingInfo = BuildingInfo.buildingInfoWithJSON(resultsArr)
                         let arrayCount = self.buildingInfo.count
                         var countBuilding = 1
