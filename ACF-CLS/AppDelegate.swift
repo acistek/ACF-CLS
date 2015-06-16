@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tableView.tableFooterView = UIView(frame: CGRectZero)
         
         Fabric.with([Crashlytics()])
-        
+        //use key chain to get device id and user name if there is
         if let getIdentifier = TegKeychain.get("deviceIdentifier"){
             Crashlytics.sharedInstance().setUserIdentifier(getIdentifier)
         }
