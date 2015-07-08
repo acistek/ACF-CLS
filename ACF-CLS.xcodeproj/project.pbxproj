@@ -904,7 +904,7 @@
 				INFOPLIST_FILE = "ACF-CLS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "94b5ef86-3896-4f6b-a793-eb87e9fea9e4";
+				PROVISIONING_PROFILE = "c212424e-cf8a-4190-921e-d29f9c2a5994";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -924,7 +924,7 @@
 				INFOPLIST_FILE = "ACF-CLS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "94b5ef86-3896-4f6b-a793-eb87e9fea9e4";
+				PROVISIONING_PROFILE = "c212424e-cf8a-4190-921e-d29f9c2a5994";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
