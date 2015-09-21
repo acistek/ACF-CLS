@@ -71,6 +71,8 @@
 		D28B544C1B0CDB2700BB6E94 /* WriteValueBackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28B544B1B0CDB2700BB6E94 /* WriteValueBackDelegate.swift */; };
 		D28B544E1B0CF54000BB6E94 /* TegKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28B544D1B0CF54000BB6E94 /* TegKeychain.swift */; };
 		D28B54501B0CF5D700BB6E94 /* TegKeychainConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28B544F1B0CF5D700BB6E94 /* TegKeychainConstants.swift */; };
+		D293049E1B74DC3B0050A877 /* PinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D293049D1B74DC3B0050A877 /* PinViewController.swift */; };
+		D2B5A9761BA876EB00F3B7B8 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B5A9751BA876EB00F3B7B8 /* StringUtils.swift */; };
 		D2B895DF1A97A736008D6CE2 /* star-30.png in Resources */ = {isa = PBXBuildFile; fileRef = D2B895DE1A97A736008D6CE2 /* star-30.png */; };
 		D2B895E31A97A851008D6CE2 /* Flag-25.png in Resources */ = {isa = PBXBuildFile; fileRef = D2B895E21A97A851008D6CE2 /* Flag-25.png */; };
 		D2B8EC751A7FBF24000E39EE /* acf-loadingx2.png in Resources */ = {isa = PBXBuildFile; fileRef = D2B8EC741A7FBF24000E39EE /* acf-loadingx2.png */; };
@@ -199,6 +201,8 @@
 		D28B544B1B0CDB2700BB6E94 /* WriteValueBackDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteValueBackDelegate.swift; sourceTree = "<group>"; };
 		D28B544D1B0CF54000BB6E94 /* TegKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TegKeychain.swift; sourceTree = "<group>"; };
 		D28B544F1B0CF5D700BB6E94 /* TegKeychainConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TegKeychainConstants.swift; sourceTree = "<group>"; };
+		D293049D1B74DC3B0050A877 /* PinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinViewController.swift; sourceTree = "<group>"; };
+		D2B5A9751BA876EB00F3B7B8 /* StringUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		D2B895DE1A97A736008D6CE2 /* star-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star-30.png"; sourceTree = "<group>"; };
 		D2B895E21A97A851008D6CE2 /* Flag-25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flag-25.png"; sourceTree = "<group>"; };
 		D2B8EC741A7FBF24000E39EE /* acf-loadingx2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "acf-loadingx2.png"; sourceTree = "<group>"; };
@@ -439,6 +443,7 @@
 			isa = PBXGroup;
 			children = (
 				D2E5164A1A40BD7A00869597 /* LoginViewController.swift */,
+				D293049D1B74DC3B0050A877 /* PinViewController.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -544,6 +549,7 @@
 				D28B544F1B0CF5D700BB6E94 /* TegKeychainConstants.swift */,
 				D28B544D1B0CF54000BB6E94 /* TegKeychain.swift */,
 				D28B544B1B0CDB2700BB6E94 /* WriteValueBackDelegate.swift */,
+				D2B5A9751BA876EB00F3B7B8 /* StringUtils.swift */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -745,8 +751,10 @@
 				D26B88A11B176126002D06C9 /* MyNavigationController.swift in Sources */,
 				D2CD70BE1B1E1C2D00CD7478 /* PODetailInfo.swift in Sources */,
 				D2BE1C811A9CC3210046D67C /* NotificationViewController.swift in Sources */,
+				D2B5A9761BA876EB00F3B7B8 /* StringUtils.swift in Sources */,
 				D2E5164D1A40BF3000869597 /* SharedClass.swift in Sources */,
 				C933E0F71A48EFB700501F2D /* CoopViewController.swift in Sources */,
+				D293049E1B74DC3B0050A877 /* PinViewController.swift in Sources */,
 				D2E5162B1A40B7D500869597 /* HomeViewController.swift in Sources */,
 				B7871FE61A7319A100B64452 /* FavoriteTableViewController.swift in Sources */,
 				D2BE1C841A9CC51D0046D67C /* NotificationInfo.swift in Sources */,

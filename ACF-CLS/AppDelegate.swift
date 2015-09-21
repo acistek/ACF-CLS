@@ -166,36 +166,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         let navigationController = application.windows[0].rootViewController as! UINavigationController
         let activeViewController = navigationController.visibleViewController
-        if Reachability.isConnectedToNetwork() {
-            SharedClass().checkCredential(self.window!)
-            if(NSUserDefaults.standardUserDefaults().valueForKey("offLine") != nil){
-                var storyboardID: String! = activeViewController.restorationIdentifier
-                if(storyboardID == nil){storyboardID = "homeVC"}
+        if(!activeViewController.isKindOfClass(PinViewController) && !activeViewController.isKindOfClass(LoginViewController)){
+            if Reachability.isConnectedToNetwork() {
+                SharedClass().checkCredential(self.window!)
+                if(NSUserDefaults.standardUserDefaults().valueForKey("offLine") != nil){
+                    var storyboardID: String! = activeViewController.restorationIdentifier
+                    if(storyboardID == nil){storyboardID = "homeVC"}
+                    let storyboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+                    let rootViewController:UIViewController = storyboard.instantiateViewControllerWithIdentifier(storyboardID) as! UIViewController
+                    navigationController.viewControllers = [rootViewController]
+                    window!.rootViewController = navigationController
+                    NSUserDefaults.standardUserDefaults().removeObjectForKey("offLine")
+                    NSUserDefaults.standardUserDefaults().synchronize()
+                }
+            }else{
+                var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                prefs.setBool(true, forKey: "offLine")
+                var storyboardID = "homeVC"
                 let storyboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
                 let rootViewController:UIViewController = storyboard.instantiateViewControllerWithIdentifier(storyboardID) as! UIViewController
                 navigationController.viewControllers = [rootViewController]
                 window!.rootViewController = navigationController
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("offLine")
-                NSUserDefaults.standardUserDefaults().synchronize()
             }
-        }else{
-            var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            prefs.setBool(true, forKey: "offLine")
-            var storyboardID = "homeVC"
-            let storyboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
-            let rootViewController:UIViewController = storyboard.instantiateViewControllerWithIdentifier(storyboardID) as! UIViewController
-            navigationController.viewControllers = [rootViewController]
-            window!.rootViewController = navigationController
-        }
-        if(application.applicationIconBadgeNumber > 0){
-            NSNotificationCenter.defaultCenter().postNotificationName("updateBadge", object: nil)
+            if(application.applicationIconBadgeNumber > 0){
+                NSNotificationCenter.defaultCenter().postNotificationName("updateBadge", object: nil)
+            }
         }
     }
 
