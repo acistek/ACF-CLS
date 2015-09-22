@@ -48,7 +48,10 @@ class CoopViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.layoutMargins = UIEdgeInsetsZero
         
@@ -63,11 +66,9 @@ class CoopViewController: UIViewController, UITableViewDataSource, UITableViewDe
             coopOnline = true
         }
         if(coopOnline){
-            coopOnline = true
             onlineCoop()
         }
         else{
-            coopOnline = false
             offlineCoop()
         }
     }
@@ -75,10 +76,6 @@ class CoopViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-        
-    func toggleSideMenu() {
-        toggleSideMenuView()
     }
     
     // MARK: UITableViewDataSource
@@ -191,7 +188,6 @@ class CoopViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell
         var t_height: CGFloat = 55.00
         if(coopOnline){
             let coopInfo = self.coopInfo[indexPath.row]
@@ -400,9 +396,11 @@ class CoopViewController: UIViewController, UITableViewDataSource, UITableViewDe
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             activityIndicatorView.startAnimating()
             
+            let authorizedJson = SharedClass().authorizedJson()
+            
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             let contactListID: NSString = prefs.valueForKey("contactListID") as! NSString
-            let url = NSURL(string: SharedClass().clsLink + "/json/coop_dsp.cfm?acfcode=clsmobile&contactlistid=\(contactListID)")
+            let url = NSURL(string: SharedClass().clsLink + "/json/coop_dsp.cfm?contactlistid=\(contactListID)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)")
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
                 //println("Task completed")
