@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-import Crashlytics
 
 class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegate, CLLocationManagerDelegate {
     
@@ -24,7 +23,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var webView: UIWebView!
-    
+    var deviceIdentifier = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         manager.delegate = self
@@ -39,13 +38,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
         //txtUsername.becomeFirstResponder()
         configureWebView()
         loadAddressURL()
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
-    
+    /*
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        //check if there is temp contact list value
+        if(NSUserDefaults.standardUserDefaults().valueForKey("tcontactListID") != nil){
+            self.performSegueWithIdentifier("pin_verify", sender: self)
+        }
+        if(NSUserDefaults.standardUserDefaults().valueForKey("contactListID") != nil){
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }*/
     
     @IBAction func userType(sender: AnyObject) {
         switch segmentedControl.selectedSegmentIndex
@@ -114,8 +124,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
     }
     
     func checkLogin(){
-        // Authentication Code
-        
         dismissKeyboard()
         
         var t_username:NSString = txtUsername.text
@@ -123,9 +131,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
         
         var username:NSString = t_username.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         var password:NSString = t_password.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        self.scrollView.addSubview(self.activityIndicatorView)
+        self.activityIndicatorView.startAnimating()
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
         if ( username.isEqualToString("") || password.isEqualToString("") ) {
-            loginIndicatorView.stopAnimating()
+            activityIndicatorView.stopAnimating()
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             var alertView:UIAlertView = UIAlertView()
             alertView.title = "Sign in Failed"
@@ -138,7 +149,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
             var post:NSString = ""
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             let deviceType = platformString()
-            var deviceIdentifier = ""
             if let getIdentifier = TegKeychain.get("deviceIdentifier"){
                 deviceIdentifier = getIdentifier
             }else{
@@ -147,7 +157,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
             }
             
             let deviceInfo: NSString = "System Name: " + UIDevice.currentDevice().systemName + "; System Version: " + UIDevice.currentDevice().systemVersion
-            
+            println(prefs.objectForKey("DEVICETOKEN"))
             if(prefs.objectForKey("DEVICETOKEN") != nil){
                 let deviceToken = prefs.valueForKey("DEVICETOKEN") as! NSString
                 post = "domainSelect=\(domainSelect)&username=\(username)&password=\(password)&acfcode=clsmobile&deviceToken=\(deviceToken)&deviceType=\(deviceType)&deviceInfo=\(deviceInfo)&deviceIdentifier=\(deviceIdentifier)"
@@ -156,14 +166,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
                 
                 post = "domainSelect=\(domainSelect)&username=\(username)&password=\(password)&acfcode=clsmobile&deviceToken=\(deviceToken)&deviceType=\(deviceType)&deviceInfo=\(deviceInfo)&deviceIdentifier=\(deviceIdentifier)"
             }
-            
             var url:NSURL = NSURL(string: SharedClass().clsLink + "/json/login_act.cfm")!
             
             var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             
             var postLength:NSString = String( postData.length )
-            
-            //NSLog("PostData2: %@",postData);
             
             var request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "POST"
@@ -172,69 +179,49 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             
-            
             var reponseError: NSError?
             var response: NSURLResponse?
             
             var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError)
-            
-            self.scrollView.addSubview(self.loginIndicatorView)
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-            loginIndicatorView.startAnimating()
-            
-            if ( urlData != nil ) {
+            if (urlData != nil) {
                 let res = response as! NSHTTPURLResponse!;
-                
-                //NSLog("Response code: %ld", res.statusCode);
-                
-                if (res.statusCode >= 200 && res.statusCode < 300)
-                {
+                if (res.statusCode >= 200 && res.statusCode < 300){
+                    
                     var responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                    
-                    //NSLog("Response ==> %@", responseData);
-                    
                     var error: NSError?
-                    
                     let jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers , error: &error) as! NSDictionary
-                    
-                    
                     let success:NSInteger = jsonData.valueForKey("success") as! NSInteger
-                    
-                    
-                    //[jsonData[@"success"] integerValue];
-                    
-                    //NSLog("Success: %ld", success);
-                    
-                    if(success == 1)
-                    {
-                        let coopID:String = jsonData.valueForKey("coopID") as! String
-                        let empName:String = jsonData.valueForKey("userName") as! String
-                        let contactListID:String = jsonData.valueForKey("contactListID") as! String
-                        let loginUUID: String = jsonData.valueForKey("loginUUID") as! String
+                    if(success == 1){
+                        //grap all info and put in a temp default setting for user to go to two step authentication
+                        let tcoopID:String = jsonData.valueForKey("coopID") as! String
+                        let temployeeName:String = jsonData.valueForKey("userName") as! String
+                        let tcontactListID:String = jsonData.valueForKey("contactListID") as! String
+                        let tloginUUID: String = jsonData.valueForKey("loginUUID") as! String
+                        let tcellPhone: String = jsonData.valueForKey("cellPhone") as! String
                         //NSLog("Login SUCCESS");
                         
                         //let loggedInDate = NSDate(); this one has time element
-                        let loggedInDate = NSCalendar.currentCalendar().startOfDayForDate(NSDate()) //this is without time
+                        let tloggedInDate = NSCalendar.currentCalendar().startOfDayForDate(NSDate()) //this is without time
                         
                         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        prefs.setObject(coopID, forKey: "coopID")
-                        prefs.setObject(loggedInDate, forKey: "logginedDate")
-                        prefs.setObject(empName, forKey: "employeeName")
+                        prefs.setObject(tcoopID, forKey: "tcoopID")
+                        prefs.setObject(tloggedInDate, forKey: "tlogginedDate")
+                        prefs.setObject(temployeeName, forKey: "temployeeName")
                         //the below vars to check credential
-                        prefs.setObject(loggedInDate, forKey: "credentialDate")
-                        prefs.setObject(contactListID, forKey: "contactListID")
-                        prefs.setObject(domainSelect, forKey: "domainSelect")
-                        
+                        prefs.setObject(tloggedInDate, forKey: "tcredentialDate")
+                        prefs.setObject(tcontactListID, forKey: "tcontactListID")
+                        prefs.setObject(tcellPhone, forKey: "tcellPhone")
+                        prefs.setObject(self.domainSelect, forKey: "tdomainSelect")
+                        prefs.synchronize()
                         TegKeychain.set("username", value: username as! String)
                         TegKeychain.set("password", value: password as! String)
-                        TegKeychain.set("loginUUID", value: loginUUID)
-                        //set u p crashlytics with user name and device id.
-                        Crashlytics.sharedInstance().setUserName(empName)
-                        Crashlytics.sharedInstance().setUserIdentifier(deviceIdentifier)
-                        //use the synchronize() command for NSUserDefaults to make sure your stuff is saved, but in iOS 8 and on, you should not call synchronize() in most situations.
-                        //prefs.synchronize()
+                        TegKeychain.set("loginUUID", value: tloginUUID)
+                        self.activityIndicatorView.stopAnimating()
+                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                        self.performSegueWithIdentifier("pin_verify", sender: self)
+                        //self.dismissViewControllerAnimated(true, completion: nil)
+                        //addFavorite()
                         
-                        self.dismissViewControllerAnimated(true, completion: nil)
                     } else {
                         var error_msg: String
                         
@@ -249,11 +236,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
                         alertView.delegate = self
                         alertView.addButtonWithTitle("OK")
                         alertView.show()
+                        self.activityIndicatorView.stopAnimating()
+                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                     }
                     
                 } else {
-                    //NSLog("error \(res.statusCode)")
                     SharedClass().serverAlert(self)
+                    self.activityIndicatorView.stopAnimating()
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 }
             } else {
                 var alertView:UIAlertView = UIAlertView()
@@ -265,11 +255,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
                 alertView.delegate = self
                 alertView.addButtonWithTitle("OK")
                 alertView.show()
+                self.activityIndicatorView.stopAnimating()
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
-            loginIndicatorView.stopAnimating()
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         }
-        
     }
     
     func loadAddressURL() {
@@ -285,7 +274,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
         webView.dataDetectorTypes = .All
     }
     
-        func webViewDidStartLoad(webView: UIWebView) {
+    func webViewDidStartLoad(webView: UIWebView) {
         scrollView.addSubview(activityIndicatorView)
         activityIndicatorView.startAnimating()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
