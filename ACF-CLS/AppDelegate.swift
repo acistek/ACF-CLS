@@ -9,6 +9,9 @@
 import UIKit
 import CoreData
 import AudioToolbox
+import Fabric
+import Crashlytics
+
 
 extension UIImage {
     func imageWithColor(tintColor: UIColor) -> UIImage {
@@ -70,6 +73,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var tableView = UITableView.appearance()
         tableView.tableFooterView = UIView(frame: CGRectZero)
+        Fabric.with([Crashlytics()])
+
         return true
     }
     
@@ -161,7 +166,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let activeViewController = navigationController.visibleViewController
         if Reachability.isConnectedToNetwork() {
             SharedClass().checkCredential(self.window!)
-            if(NSUserDefaults.standardUserDefaults().valueForKey("OFFLINE") != nil){
+            if(NSUserDefaults.standardUserDefaults().valueForKey("offLine") != nil){
                 var storyboardID: String! = activeViewController.restorationIdentifier
                 if(storyboardID == nil){storyboardID = "homeVC"}
                 let storyboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -169,19 +174,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let rootViewController:UIViewController = storyboard.instantiateViewControllerWithIdentifier(storyboardID) as! UIViewController
                 navigationController.viewControllers = [rootViewController]
                 window!.rootViewController = navigationController
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("OFFLINE")
+                NSUserDefaults.standardUserDefaults().removeObjectForKey("offLine")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
         }else{
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            prefs.setBool(true, forKey: "OFFLINE")
+            prefs.setBool(true, forKey: "offLine")
             var storyboardID = "homeVC"
             let storyboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
             let rootViewController:UIViewController = storyboard.instantiateViewControllerWithIdentifier(storyboardID) as! UIViewController
             navigationController.viewControllers = [rootViewController]
             window!.rootViewController = navigationController
-
         }
         if(application.applicationIconBadgeNumber > 0){
             NSNotificationCenter.defaultCenter().postNotificationName("updateBadge", object: nil)

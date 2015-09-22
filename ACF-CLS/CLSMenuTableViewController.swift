@@ -7,14 +7,13 @@
 //
 
 import UIKit
-import MessageUI
 
-class MyMenuTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
+class CLSMenuTableViewController: UITableViewController {
     
-    var myMail: MFMailComposeViewController!
     var selectedMenuItem : Int = 0
-    var menuArr = ["Menu","Search","ACF Buildings","ACF Web Site"]
-    var menuImg = ["blank","search","building","web"]
+    var menuArr = ["Menu","Search","ACF Buildings","ACF Web Site","Support","Contact Us"]
+    var menuImg = ["blank","search","building","web","blank","help"]
+    var rowNo = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,12 +48,13 @@ class MyMenuTableViewController: UITableViewController, MFMailComposeViewControl
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section.
-        return 4
+        return 6
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var cell = tableView.dequeueReusableCellWithIdentifier("CELL") as? UITableViewCell
+        rowNo += 1
         cell?.layoutMargins = UIEdgeInsetsZero
         if (cell == nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "CELL")
@@ -65,6 +65,7 @@ class MyMenuTableViewController: UITableViewController, MFMailComposeViewControl
             cell!.selectedBackgroundView = selectedBackgroundView
         }
         if(menuArr[indexPath.row] == "Menu" || menuArr[indexPath.row] == "Support"){
+            rowNo = 1
             cell!.backgroundColor = SharedClass().headerColor
             let selectedColor = UIView()
             selectedColor.backgroundColor = SharedClass().headerColor
@@ -76,16 +77,12 @@ class MyMenuTableViewController: UITableViewController, MFMailComposeViewControl
             cell!.textLabel?.text = menuArr[indexPath.row]
         }
         else{
-            //let selectedColor = UIView()
-            //selectedColor.backgroundColor = UIColor.lightGrayColor()
-            //cell!.selectedBackgroundView = selectedColor
+            cell!.backgroundColor = rowNo % 2 == 0 ? UIColor.clearColor() : SharedClass().cellBackGroundColor
             cell!.textLabel?.textColor = UIColor.blackColor()
             cell!.textLabel?.font = UIFont.boldSystemFontOfSize(14.0)
             cell!.textLabel?.text = menuArr[indexPath.row]
             cell!.imageView?.image = UIImage(named: menuImg[indexPath.row])
         }
-        
-       
         return cell!
     }
     
@@ -94,47 +91,29 @@ class MyMenuTableViewController: UITableViewController, MFMailComposeViewControl
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        //if (indexPath.row == selectedMenuItem) {
-        //    self.dismissViewControllerAnimated(true, completion: nil)
-        //}
-        //selectedMenuItem = indexPath.row
-        
-        //Present new view controller
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
-        var destViewController : UIViewController
-        var isHeader = false
+        var isRefresh = false
         switch (indexPath.row) {
         case 1:
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
+            isRefresh = true
             break
         case 2:
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("buildingInfo") as! UIViewController
+            NSNotificationCenter.defaultCenter().postNotificationName("building", object: nil)
             break
         case 3:
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("acfWeb") as! UIViewController
+            NSNotificationCenter.defaultCenter().postNotificationName("acfWeb", object: nil)
+            break
+        case 5:
+            NSNotificationCenter.defaultCenter().postNotificationName("contactUs", object: nil)
             break
         default:
-            isHeader = true
-            self.dismissViewControllerAnimated(true, completion: nil)
-            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
             break
         }
-        if(!isHeader){
+        if(isRefresh){
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main",bundle: nil)
+            var destViewController : UIViewController
+            destViewController = mainStoryboard.instantiateViewControllerWithIdentifier("homeVC") as! UIViewController
             sideMenuController()?.setContentViewController(destViewController)
         }
-        //tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
-    func mailComposeController(controller: MFMailComposeViewController!,didFinishWithResult result: MFMailComposeResult,error: NSError!){
-        switch(result.value){
-        case MFMailComposeResultSent.value:
-            println("Email sent")
-        default:
-            println("Whoops")
-        }
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
 }
 

@@ -23,6 +23,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet var groupTextField: UITextField!
     var groupPicker: UIPickerView!
     
+    var delegate: WriteValueBackDelegate?
+    
     // Create an empty array of LogItem's
     
     //var userInfo: UserInfo?
@@ -39,6 +41,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     var t_groupName = ""
     
     var t_profile = 0
+    
+    let authorizedJson = SharedClass().authorizedJson()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tabBar: UITabBar!
@@ -67,7 +71,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         sendEmail.hidden = true
         
         groupTextField.hidden = true
@@ -115,7 +122,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             activityIndicatorView.startAnimating()
             
-            let url = NSURL(string: SharedClass().clsLink + "/json/user_dsp.cfm?contactListID=\(userContactListID)&acfcode=clsmobile&adminID=\(myContactListID)")
+            let url = NSURL(string: SharedClass().clsLink + "/json/user_dsp.cfm?contactListID=\(userContactListID)&adminID=\(myContactListID)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)")
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
                 //println("Task completed")
@@ -375,8 +382,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell
-        
         var t_height: CGFloat = 47.00
         let detailInfo = self.detailInfo[indexPath.row]
         if(detailInfo.fieldName == "header"){
@@ -415,15 +420,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             }
             else{
                 //get group name from popup text field and then check favorite table if the user is existed or not to take action
-                self.tableView.addSubview(self.activityIndicatorView)
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-                self.activityIndicatorView.startAnimating()
-                
                 self.t_groupName = textField.text
                 self.saveToFavorite(self.myContactListID, favorite_ContactListID: self.userContactListID, groupName: self.t_groupName)
-                
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                self.activityIndicatorView.stopAnimating()
             }
         }))
         if(checkGroup != ""){
@@ -440,12 +438,16 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     func saveToFavorite(myContactListID: String, favorite_ContactListID: String, groupName: String) {
         var post: NSString = ""
-        post = "contactListID=\(myContactListID)&acfcode=clsmobile&favorite_ContactListID=\(favorite_ContactListID)&groupName=\(groupName)"
+        self.tableView.addSubview(self.activityIndicatorView)
+        self.activityIndicatorView.startAnimating()
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        post = "contactListID=\(myContactListID)&favorite_ContactListID=\(favorite_ContactListID)&groupName=\(groupName)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)"
         var url:NSURL = NSURL(string: SharedClass().clsLink + "/json/favorite_act.cfm")!
         var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
         var postLength:NSString = String( postData.length )
         var request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
+        
         request.HTTPBody = postData
         request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -468,12 +470,19 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                     self.groupPicker.reloadAllComponents()
                     self.groupPicker.selectRow(0, inComponent: 0, animated: true)
                     self.groupTextField.text = self.groupPickerValues[0] as! String
+                    self.activityIndicatorView.stopAnimating()
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 })
+                delegate?.writeValueBack("Added to group")
                 self.actionSheet(message)
             }else{
+                self.activityIndicatorView.stopAnimating()
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 SharedClass().serverAlert(self)
             }
         } else {
+            self.activityIndicatorView.stopAnimating()
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             SharedClass().serverAlert(self)
         }
     }

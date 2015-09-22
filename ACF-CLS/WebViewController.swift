@@ -8,11 +8,11 @@ A view controller that demonstrates how to use UIWebView.
 
 */
 
-import UIKit
+import WebKit
 
-class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, UIScrollViewDelegate {
+class WebViewController: UIViewController, WKScriptMessageHandler, WKNavigationDelegate, UITabBarDelegate {
     
-    @IBOutlet weak var webView: UIWebView!
+    var webView: WKWebView
     
     var webSiteAddress = "https://www.acf.hhs.gov"
     
@@ -25,12 +25,18 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, 
     @IBOutlet weak var forwardTabBar: UITabBarItem!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
-    // MARK: View Life Cycle
+    required init(coder aDecoder: NSCoder) {
+        self.webView = WKWebView(frame: CGRectZero)
+        super.init(coder: aDecoder)
+        self.webView.navigationDelegate = self
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        webView.scrollView.delegate = self
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         
         for item in tabBar.items as! [UITabBarItem] {
             if let image = item.image {
@@ -38,23 +44,53 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, 
             }
         }
         
+        let userScript = WKUserScript(
+            source: "sendMail(0)",
+            injectionTime: WKUserScriptInjectionTime.AtDocumentEnd,
+            forMainFrameOnly: true
+        )
+        let contentController = WKUserContentController()
+        contentController.addUserScript(userScript)
+        contentController.addScriptMessageHandler(
+            self,
+            name: "callbackHandler"
+        )
+        
+        
+        let config = WKWebViewConfiguration()
+        config.userContentController = contentController
+        
+        self.webView = WKWebView(
+            frame: UIScreen.mainScreen().bounds,
+            configuration: config
+        )
+        
+        view.addSubview(webView)
+        
+        webView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        let top = NSLayoutConstraint(item: webView, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: +64)
+        let bottom = NSLayoutConstraint(item: webView, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: -44)
+        let width = NSLayoutConstraint(item: webView, attribute: .Width, relatedBy: .Equal, toItem: view, attribute: .Width, multiplier: 1, constant: 0)
+        view.addConstraints([top, bottom, width])
+        
+        webView.addObserver(self, forKeyPath: "loading", options: .New, context: nil)
+        webView.addObserver(self, forKeyPath: "estimatedProgress", options: .New, context: nil)
+        
         // Do any additional setup after loading the view.
         self.title = navigationTitle
-        if(navigationTitle == "ACF Web"){
-            var homeButton : UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "menu"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideMenu")
-            self.navigationItem.leftBarButtonItem = homeButton
-        }
-        else{
-            self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        }
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        
         backTabBar.enabled = false
         forwardTabBar.enabled = false
         configureWebView()
         loadAddressURL()
     }
     
-    
-    
+    override func viewWillDisappear(animated: Bool) {
+        webView.removeFromSuperview()
+        NSURLCache.sharedURLCache().removeAllCachedResponses()
+        NSURLCache.sharedURLCache().memoryCapacity = 0
+    }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
         var selectedTag = tabBar.selectedItem?.tag
@@ -68,65 +104,53 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITabBarDelegate, 
         else if(selectedTag == 2){
             webView.goForward()
         }
-        hideSideMenuView()
     }
     
     func loadAddressURL() {
         if let requestURL = NSURL(string: webSiteAddress) {
             let request = NSURLRequest(URL: requestURL)
-            webView.loadRequest(request)
+            if Reachability.isConnectedToNetwork() {
+                webView.loadRequest(request)
+            }else{
+                SharedClass().connectionAlert(self)
+            }
         }
     }
     
     func configureWebView() {
         webView.backgroundColor = UIColor.whiteColor()
-        webView.scalesPageToFit = true
-        if(!isCoopWeb){
-            webView.dataDetectorTypes = .All
-        }
-        else{
-            webView.dataDetectorTypes = .None
+    }
+    
+    func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage){
+        if(message.name == "callbackHandler") {
+            if(message.body.containsString("notResponded")){
+                performSegueWithIdentifier("myProfile", sender: self)
+            }
         }
     }
     
-    func webViewDidStartLoad(webView: UIWebView) {
-        activityIndicatorView.startAnimating()
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-    }
-    
-    func webViewDidFinishLoad(webView: UIWebView) {
-        activityIndicatorView.stopAnimating()
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-        if(!webView.canGoBack){
-            backTabBar.enabled = false
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<()>) {
+        if (keyPath == "loading") {
+            backTabBar.enabled = webView.canGoBack
+            forwardTabBar.enabled = webView.canGoForward
         }
-        else{backTabBar.enabled = true}
-        if(!webView.canGoForward){
-            forwardTabBar.enabled = false
-        }
-        else{forwardTabBar.enabled = true}
-    }
-    
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        return true
-    }
-    
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        // Report the error inside the web view.
-        let localizedErrorMessage = NSLocalizedString("An error occured:", comment: "")
         
-        let errorHTML = "<!doctype html><html><body><div style=\"width: 100%%; text-align: center; font-size: 36pt;\">\(localizedErrorMessage) \(error.localizedDescription)</div></body></html>"
-        
-        webView.loadHTMLString(errorHTML, baseURL: nil)
-        activityIndicatorView.stopAnimating()
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        webView.addSubview(self.activityIndicatorView)
+        if (keyPath == "estimatedProgress") {
+            if(webView.estimatedProgress < 1){
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+                activityIndicatorView.startAnimating()
+            }else{
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                activityIndicatorView.stopAnimating()
+            }
+        }
     }
     
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        hideSideMenuView()
-    }
-    
-    func toggleSideMenu() {
-        toggleSideMenuView()
+    func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
+        /*let alert = UIAlertController(title: "Error", message:  error.localizedDescription, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default,  handler: nil))
+        presentViewController(alert, animated: true, completion: nil)*/
+        SharedClass().connectionAlert(self)
     }
 }

@@ -27,7 +27,8 @@ class APIController{
         
         // Now escape anything else that isn't URL-friendly
         if let escapedSearchTerm = userSearchTerm.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
-            let urlPath = SharedClass().clsLink + "/json/search_dsp.cfm?term=\(escapedSearchTerm)&acfcode=clsmobile&from=\(fromRow)&to=\(toRow)"
+            let authorizedJson = SharedClass().authorizedJson()
+            let urlPath = SharedClass().clsLink + "/json/search_dsp.cfm?term=\(escapedSearchTerm)&from=\(fromRow)&to=\(toRow)&deviceIdentifier=\(authorizedJson.deviceIdentifier)&loginUUID=\(authorizedJson.loginUUID)"
             let url = NSURL(string: urlPath)
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
@@ -43,8 +44,18 @@ class APIController{
                     // If there is an error parsing JSON, print it to the console
                     println("JSON Error \(err!.localizedDescription)")
                 }
-                //let results: NSArray = jsonResult["results"] as NSArray
-                self.delegate.didReveiveAPIResults(jsonResult)
+                let res = response as! NSHTTPURLResponse!
+                if(res != nil){
+                    if (res.statusCode >= 200 && res.statusCode < 300){
+                        self.delegate.didReveiveAPIResults(jsonResult)
+                    }else{
+                        var jsonResult: NSDictionary = ["resultCount":0,"error_message":"System is Temporarily Unavailable","results":[]] as NSDictionary
+                        self.delegate.didReveiveAPIResults(jsonResult)
+                    }
+                }else{
+                    var jsonResult: NSDictionary = ["resultCount":0,"error_message":"System is Temporarily Unavailable","results":[]] as NSDictionary
+                    self.delegate.didReveiveAPIResults(jsonResult)
+                }
             })
             task.resume()
         }
