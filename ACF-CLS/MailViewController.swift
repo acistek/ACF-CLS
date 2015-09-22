@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 AcisTek Corporation. All rights reserved.
 //
 
-import UIKit
 import WebKit
 
 class MailViewController: UIViewController, WKScriptMessageHandler, WKNavigationDelegate {
@@ -27,13 +26,24 @@ class MailViewController: UIViewController, WKScriptMessageHandler, WKNavigation
         self.webView.navigationDelegate = self
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //stop display menu from swiping to right
+        var rightSwipe = UISwipeGestureRecognizer(target: self, action: nil)
+        rightSwipe.direction = .Right
+        view.addGestureRecognizer(rightSwipe)
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        if(toEmail == "" && groupName == ""){
+            self.title = "Contact Us"
+        }
+        else{
+            self.title = "Mail"
+        }
+        
         let sendMail = UIBarButtonItem(title: "Send", style: .Plain, target: self, action: Selector("sendEmail"))
         self.navigationItem.rightBarButtonItem = sendMail
-        self.title = "Mail"
+        
         
         var userScript = WKUserScript(
             source: "sendMail(0)",
@@ -68,10 +78,24 @@ class MailViewController: UIViewController, WKScriptMessageHandler, WKNavigation
         
         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let contactListID: NSString = prefs.valueForKey("contactListID") as! NSString
-        if let groupName = groupName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
-            var url = NSURL(string:SharedClass().clsLink + "/?switchID=email_dsp&contactlistid=\(contactListID)&toEmail=\(toEmail)&groupName=\(groupName)")
+        
+        if(toEmail == "" && groupName == ""){
+            var url = NSURL(string:SharedClass().clsLink + "/?switchID=help_dsp&contactlistid=\(contactListID)")
             var req = NSURLRequest(URL:url!)
             self.webView.loadRequest(req)
+        }else{
+            if let groupName = groupName.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
+                var url = NSURL(string:SharedClass().clsLink + "/?switchID=email_dsp&contactlistid=\(contactListID)&toEmail=\(toEmail)&groupName=\(groupName)")
+                var req = NSURLRequest(URL:url!)
+                self.webView.loadRequest(req)
+            }
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if !Reachability.isConnectedToNetwork() {
+            SharedClass().connectionAlert(self)
         }
     }
     
@@ -118,4 +142,7 @@ class MailViewController: UIViewController, WKScriptMessageHandler, WKNavigation
         super.didReceiveMemoryWarning()
     }
     
+    func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
+        SharedClass().connectionAlert(self)
+    }
 }
