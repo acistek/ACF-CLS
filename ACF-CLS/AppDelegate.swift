@@ -170,7 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         let navigationController = application.windows[0].rootViewController as! UINavigationController
         let activeViewController = navigationController.visibleViewController
-        if(!activeViewController.isKindOfClass(PinViewController) && !activeViewController.isKindOfClass(LoginViewController)){
+        //if(!activeViewController.isKindOfClass(PinViewController) && !activeViewController.isKindOfClass(LoginViewController)){
             if Reachability.isConnectedToNetwork() {
                 SharedClass().checkCredential(self.window!)
                 if(NSUserDefaults.standardUserDefaults().valueForKey("offLine") != nil){
@@ -197,7 +197,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if(application.applicationIconBadgeNumber > 0){
                 NSNotificationCenter.defaultCenter().postNotificationName("updateBadge", object: nil)
             }
-        }
+        //}
     }
 
     func applicationWillTerminate(application: UIApplication) {
