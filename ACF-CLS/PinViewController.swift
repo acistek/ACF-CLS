@@ -178,6 +178,7 @@ class PinViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegat
         }else{
             checkText = prospectiveText.containsOnlyCharactersIn("0123456789") &&
                 count(String(prospectiveText).utf16) <= 6
+            
         }
         if(!checkText){
             isGood = false
@@ -379,7 +380,7 @@ class PinViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegat
     
     //this func to pop up a text to enter pin number
     func verifyPin() {
-        enterTxtField = 3
+        self.enterTxtField = 3
         var alert = UIAlertController(title: "Verify PIN", message: "A PIN has been sent to your phone", preferredStyle: .Alert)
         //2. Add the text field. You can configure it however you need.
         alert.addTextFieldWithConfigurationHandler({(verifyTxtPin) -> Void in

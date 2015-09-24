@@ -135,7 +135,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
         self.activityIndicatorView.startAnimating()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
-        if ( username.isEqualToString("") || password.isEqualToString("") ) {
+        if (username.isEqualToString("") || password.isEqualToString("") ) {
             activityIndicatorView.stopAnimating()
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             var alertView:UIAlertView = UIAlertView()
@@ -157,7 +157,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
             }
             
             let deviceInfo: NSString = "System Name: " + UIDevice.currentDevice().systemName + "; System Version: " + UIDevice.currentDevice().systemVersion
-            println(prefs.objectForKey("DEVICETOKEN"))
+            
             if(prefs.objectForKey("DEVICETOKEN") != nil){
                 let deviceToken = prefs.valueForKey("DEVICETOKEN") as! NSString
                 post = "domainSelect=\(domainSelect)&username=\(username)&password=\(password)&acfcode=clsmobile&deviceToken=\(deviceToken)&deviceType=\(deviceType)&deviceInfo=\(deviceInfo)&deviceIdentifier=\(deviceIdentifier)"
@@ -198,30 +198,45 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIWebViewDeleg
                         let tcontactListID:String = jsonData.valueForKey("contactListID") as! String
                         let tloginUUID: String = jsonData.valueForKey("loginUUID") as! String
                         let tcellPhone: String = jsonData.valueForKey("cellPhone") as! String
+                        let tisDemoAccount: NSInteger = jsonData.valueForKey("isDemoAccount") as! NSInteger
                         //NSLog("Login SUCCESS");
                         
                         //let loggedInDate = NSDate(); this one has time element
                         let tloggedInDate = NSCalendar.currentCalendar().startOfDayForDate(NSDate()) //this is without time
                         
                         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        prefs.setObject(tcoopID, forKey: "tcoopID")
-                        prefs.setObject(tloggedInDate, forKey: "tlogginedDate")
-                        prefs.setObject(temployeeName, forKey: "temployeeName")
-                        //the below vars to check credential
-                        prefs.setObject(tloggedInDate, forKey: "tcredentialDate")
-                        prefs.setObject(tcontactListID, forKey: "tcontactListID")
-                        prefs.setObject(tcellPhone, forKey: "tcellPhone")
-                        prefs.setObject(self.domainSelect, forKey: "tdomainSelect")
-                        prefs.synchronize()
-                        TegKeychain.set("username", value: username as! String)
-                        TegKeychain.set("password", value: password as! String)
-                        TegKeychain.set("loginUUID", value: tloginUUID)
-                        self.activityIndicatorView.stopAnimating()
-                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                        self.performSegueWithIdentifier("pin_verify", sender: self)
-                        //self.dismissViewControllerAnimated(true, completion: nil)
-                        //addFavorite()
                         
+                        if(tisDemoAccount == 1){
+                            prefs.setObject(tcoopID, forKey: "coopID")
+                            prefs.setObject(tloggedInDate, forKey: "logginedDate")
+                            prefs.setObject(temployeeName, forKey: "employeeName")
+                            prefs.setObject(tloggedInDate, forKey: "credentialDate")
+                            prefs.setObject(tcontactListID, forKey: "contactListID")
+                            prefs.setObject(self.domainSelect, forKey: "domainSelect")
+                            prefs.synchronize()
+                            TegKeychain.set("username", value: username as! String)
+                            TegKeychain.set("password", value: password as! String)
+                            TegKeychain.set("loginUUID", value: tloginUUID)
+                            self.activityIndicatorView.stopAnimating()
+                            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        }else{
+                            prefs.setObject(tcoopID, forKey: "tcoopID")
+                            prefs.setObject(tloggedInDate, forKey: "tlogginedDate")
+                            prefs.setObject(temployeeName, forKey: "temployeeName")
+                            //the below vars to check credential
+                            prefs.setObject(tloggedInDate, forKey: "tcredentialDate")
+                            prefs.setObject(tcontactListID, forKey: "tcontactListID")
+                            prefs.setObject(tcellPhone, forKey: "tcellPhone")
+                            prefs.setObject(self.domainSelect, forKey: "tdomainSelect")
+                            prefs.synchronize()
+                            TegKeychain.set("username", value: username as! String)
+                            TegKeychain.set("password", value: password as! String)
+                            TegKeychain.set("loginUUID", value: tloginUUID)
+                            self.activityIndicatorView.stopAnimating()
+                            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                            self.performSegueWithIdentifier("pin_verify", sender: self)
+                        }
                     } else {
                         var error_msg: String
                         
