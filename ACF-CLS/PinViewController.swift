@@ -325,6 +325,7 @@ class PinViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegat
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             var reponseError: NSError?
+            
             var response: NSURLResponse?
             var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError)
             if (urlData != nil) {
@@ -345,7 +346,6 @@ class PinViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegat
                         })
                     }
                     else{
-                        prefs.setObject(phoneFactor, forKey: "tcellPhone")
                         var error_msg: String
                         var error_title: String
                         if jsonData["error_message"] as? NSString != nil {
