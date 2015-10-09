@@ -96,7 +96,9 @@ class PinViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegat
             verifyTxtCell.text = ""
             verifyTxtCell.keyboardType = UIKeyboardType.NumberPad
         })
-        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
+            self.enterTxtField = 1
+        }))
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as! UITextField
             //strip non numeric
@@ -127,9 +129,6 @@ class PinViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegat
             else{
                 self.checkCellPhone(self.authorizedJson.deviceIdentifier as String, loginUUID: self.authorizedJson.loginUUID as String, cellPhone: phoneFactor as String)
             }
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
-            self.enterTxtField = 1
         }))
         
         // 4. Present the alert.
@@ -389,7 +388,11 @@ class PinViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegat
             verifyTxtPin.text = ""
             verifyTxtPin.keyboardType = UIKeyboardType.NumberPad
         })
-        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
+            var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            prefs.removeObjectForKey("tverifyPin")
+            self.enterTxtField = 1
+        }))
         alert.addAction(UIAlertAction(title: "Verify", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as! UITextField
             
@@ -408,11 +411,6 @@ class PinViewController: UIViewController, UITextFieldDelegate, UIWebViewDelegat
             else{
                 self.checkPinCode(self.authorizedJson.deviceIdentifier as String, loginUUID: self.authorizedJson.loginUUID as String, pinCode: textField.text)
             }
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
-            var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            prefs.removeObjectForKey("tverifyPin")
-            self.enterTxtField = 1
         }))
         self.presentViewController(alert, animated: true, completion: nil)
     }
