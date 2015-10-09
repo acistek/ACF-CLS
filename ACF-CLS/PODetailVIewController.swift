@@ -92,10 +92,10 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
         if(poDetailList.LastName == "POName"){
             t_height = 40.0
         }else if(poDetailList.LastName == "WithEmail" || poDetailList.LastName == "ExternalEmail" || poDetailList.LastName == "noEmail"){
-            t_height = 20.0
+            t_height = 30.0
         }
         else if(poDetailList.LastName == "officeTitle"){
-            t_height = 20.0
+            t_height = 30.0
         }
         else{
             t_height = 40.0
@@ -122,7 +122,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             var t_header = ""
             t_header = POName
             cell.textLabel?.text = t_header
-            cell.detailTextLabel?.text = ""
+            cell.detailTextLabel?.text = " "
             cell.userInteractionEnabled = false;
         }else if(poDetailList.LastName == "WithEmail" || poDetailList.LastName == "ExternalEmail" || poDetailList.LastName == "noEmail"){
             cell.backgroundColor = SecondTitleColor
@@ -137,7 +137,7 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             cell.textLabel?.textAlignment = NSTextAlignment.Center
             cell.accessoryType = .None
             var t_header = poDetailList.FirstName
-            cell.detailTextLabel?.text = ""
+            cell.detailTextLabel?.text = " "
             cell.userInteractionEnabled = false;
         }
         else if(poDetailList.LastName == "officeTitle"){
@@ -150,8 +150,8 @@ class PODetailVIewController: UIViewController, UITableViewDataSource, UITableVi
             cell.textLabel?.textAlignment = NSTextAlignment.Center
             cell.accessoryType = .None
             var t_header = poDetailList.FirstName
-            cell.textLabel?.text = "Division - " + poDetailList.FirstName
-            cell.detailTextLabel?.text = ""
+            cell.textLabel?.text = "Division"
+            cell.detailTextLabel?.text = poDetailList.FirstName
             cell.userInteractionEnabled = false;
         }
         else{

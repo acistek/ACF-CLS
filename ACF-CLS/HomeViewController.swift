@@ -8,7 +8,7 @@
 
 import WebKit
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchBarDelegate, UITabBarDelegate, WKScriptMessageHandler, WKNavigationDelegate, APIControllerProtocol{
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchBarDelegate, UITabBarDelegate, WKScriptMessageHandler, WKNavigationDelegate, APIControllerProtocol, WriteValueBackDelegate{
     
     var api: APIController?
     
@@ -107,7 +107,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         updateBadge()
         if (SharedClass().isLoginExpired()){
             navigationItem.rightBarButtonItem?.title = ""
@@ -115,13 +114,16 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //keep device token if login expired
             var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             let devicetoken: AnyObject? = prefs.valueForKey("DEVICETOKEN")
-            
-            let appDomain = NSBundle.mainBundle().bundleIdentifier
-            NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)
-            
-            prefs.setObject(devicetoken, forKey: "DEVICETOKEN")
             isWebError = false // this line to refresh chart when go back from login
-            self.performSegueWithIdentifier("goto_login", sender: self)
+            
+            if(prefs.valueForKey("tcontactListID") == nil){
+                let appDomain = NSBundle.mainBundle().bundleIdentifier
+                NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)
+                prefs.setObject(devicetoken, forKey: "DEVICETOKEN")
+                self.performSegueWithIdentifier("goto_login", sender: self)
+            }else{
+                self.performSegueWithIdentifier("pin_check", sender: self)
+            }
         }
         else{
             let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -136,6 +138,21 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             else{
                 self.navigationItem.rightBarButtonItem?.title = ""
             }
+        }
+    }
+    
+    func writeValueBack(value: String) {
+        // this is value from Pin View Controller
+        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if let username = prefs.valueForKey("employeeName") as? String{
+            self.usernameLabel.text = username
+        }
+        let isCoopable: Int = prefs.integerForKey("coopID") as Int
+        if (isCoopable > 0) {
+            self.navigationItem.rightBarButtonItem?.title = "COOP"
+        }
+        else{
+            self.navigationItem.rightBarButtonItem?.title = ""
         }
     }
     
@@ -171,13 +188,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         txtSearchBar.text = ""
         usernameLabel.text = ""
         //keep device token if sign out
-        var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let devicetoken = prefs.valueForKey("DEVICETOKEN") as! NSString
-        
         let appDomain = NSBundle.mainBundle().bundleIdentifier
         NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)
-        
-        prefs.setObject(devicetoken, forKey: "DEVICETOKEN")
         self.performSegueWithIdentifier("goto_login", sender: self)
     }
     
@@ -189,6 +201,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func unwindToHome(segue: UIStoryboardSegue) {
+        performSegueWithIdentifier("goto_login", sender: self)
     }
     
     func didReveiveAPIResults(results: NSDictionary) {
@@ -325,6 +341,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let contactListID:String = prefs.valueForKey("contactListID") as! String
             detailViewController.userContactListID = contactListID
             detailViewController.t_profile = 1
+        }
+        if segue.identifier == "pin_check" {
+            var detailViewController: PinViewController = segue.destinationViewController as! PinViewController
+            let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            detailViewController.comeFrom = 2
         }
         txtSearchBar.resignFirstResponder()
     }
