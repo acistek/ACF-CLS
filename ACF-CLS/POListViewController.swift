@@ -101,7 +101,7 @@ class POListViewController: UIViewController, UITableViewDataSource, UITableView
             cell.textLabel?.textAlignment = .Left
             cell.accessoryType = .None
             cell.textLabel?.text = poList.subtitle
-            cell.detailTextLabel?.text = ""
+            cell.detailTextLabel?.text = " "
             cell.userInteractionEnabled = false;
         }
         else{

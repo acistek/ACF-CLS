@@ -391,7 +391,7 @@ class FavoriteTableViewController: UITableViewController, UITextFieldDelegate, W
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         var isGood = true
-        let checkText = SharedClass().validateText(textField, range: range, string: string, length: 35, characterSet: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ-' ")
+        let checkText = SharedClass().validateText(textField, range: range, string: string, length: 35, characterSet: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ-' ", message1: "The Group Name must be in letters, numbers, hyphens, single quotes, and spaces only", message2: "The Group Name")
         if(!checkText){
             isGood = false
         }
